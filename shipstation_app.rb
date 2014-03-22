@@ -40,7 +40,7 @@ class ShipStationApp < Sinatra::Base
     response = {
       request_id: request_id,
       summary: "Order created in ShipStation: #{@shipstation_id}",
-      order: {id: order[:id], shipstation_id: @shipstation_id}
+      orders: [{id: order[:id], shipstation_id: @shipstation_id}]
     }
 
     response.to_json + "\n"
