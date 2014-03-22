@@ -31,13 +31,19 @@ class ShipStationApp < Sinatra::Base
       result = client.save_changes
 
     rescue => e
-      # tell the hub about the unsuccessful delivery attempt
+      # tell the hub about the unsuccessful create attempt
       status 500
       return { request_id: request_id, summary: "Unable to create ShipStation order. Error: #{e.message}" }.to_json + "\n"
     end
 
-    # acknowledge the successful delivery of the message
-    { request_id: request_id, summary: "Order created in ShipStation: #{@shipstation_id}" }.to_json + "\n"
+    # acknowledge the successful adding of the order
+    response = {
+      request_id: request_id,
+      summary: "Order created in ShipStation: #{@shipstation_id}",
+      order: {id: order[:id], shipstation_id: @shipstation_id}
+    }
+
+    response.to_json + "\n"
   end
 
   private
