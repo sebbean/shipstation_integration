@@ -69,6 +69,7 @@ PLATFORMS
 DEPENDENCIES
   active_support
   foreman
+  i18n
   pry
   ruby_odata!
   shipstation-ruby!
