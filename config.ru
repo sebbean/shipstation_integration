@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'bundler'
+require 'bundler/setup'
 
-Bundler.require(:default)
+#Bundler.require(:default)
 require './shipstation_app'
 run ShipStationApp

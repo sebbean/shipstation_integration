@@ -1,8 +1,9 @@
 GIT
   remote: git@github.com:schof/shipstation-ruby.git
-  revision: 717a363bc684ff02302601baec79090c60a0a4ef
+  revision: 2f652720b7fd535a21d9b624385081f490ee2d09
   specs:
     shipstation-ruby (0.0.1)
+      awesome_print
       rash
       ruby_odata
 
@@ -24,6 +25,7 @@ GEM
       activesupport (= 3.0.0)
     activesupport (3.0.0)
     addressable (2.3.5)
+    awesome_print (1.2.0)
     hashie (2.0.5)
     i18n (0.6.9)
     mime-types (2.2)

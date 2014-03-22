@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'json'
 require 'active_support/core_ext/hash/indifferent_access'
+require 'shipstation_ruby'
 
 class ShipStationApp < Sinatra::Base
   post '/add_order' do
