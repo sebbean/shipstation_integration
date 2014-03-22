@@ -5,6 +5,9 @@ gem 'active_support'
 gem 'ruby_odata', :git => 'git@github.com:visoft/ruby_odata.git'
 gem 'shipstation-ruby', :git => 'git@github.com:schof/shipstation-ruby.git'
 
+gem 'foreman'
+gem 'unicorn'
+
 group :development do
   gem 'pry'
 end
