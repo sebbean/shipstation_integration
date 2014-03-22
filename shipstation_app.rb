@@ -1,9 +1,7 @@
 require 'sinatra'
 require 'json'
 require 'active_support/core_ext/hash/indifferent_access'
-require 'shipstation_ruby'
-
-# require 'pry'
+require 'ruby_odata'
 
 class ShipStationApp < Sinatra::Base
   post '/add_order' do
@@ -14,7 +12,6 @@ class ShipStationApp < Sinatra::Base
     params = payload[:parameters]
 
     begin
-      #client = ShipStationRuby::Client.new(params[:username], params[:password])
       auth = {:username => params[:username], :password => params[:password]}
       client = OData::Service.new("https://data.shipstation.com/1.1", auth)
 
