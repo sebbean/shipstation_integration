@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:schof/shipstation-ruby.git
+  remote: git://github.com/schof/shipstation-ruby.git
   revision: 2f652720b7fd535a21d9b624385081f490ee2d09
   specs:
     shipstation-ruby (0.0.1)
@@ -8,7 +8,7 @@ GIT
       ruby_odata
 
 GIT
-  remote: git@github.com:visoft/ruby_odata.git
+  remote: git://github.com/visoft/ruby_odata.git
   revision: 56c301e9c5511df447128cc3f193d7ce6abdb68d
   specs:
     ruby_odata (0.1.5)

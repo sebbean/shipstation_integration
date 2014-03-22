@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'active_support'
-gem 'ruby_odata', :git => 'git@github.com:visoft/ruby_odata.git'
-gem 'shipstation-ruby', :git => 'git@github.com:schof/shipstation-ruby.git'
+gem 'ruby_odata', github: 'visoft/ruby_odata'
+gem 'shipstation-ruby', github: 'schof/shipstation-ruby'
 
 gem 'foreman'
 gem 'unicorn'
