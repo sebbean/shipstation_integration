@@ -3,7 +3,7 @@ require 'json'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'shipstation_ruby'
 
-require 'pry'
+# require 'pry'
 
 class ShipStationApp < Sinatra::Base
   post '/add_order' do
