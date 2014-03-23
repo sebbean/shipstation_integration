@@ -1,20 +1,20 @@
 class ShipStationApp < EndpointBase::Sinatra::Base
+
   post '/add_order' do
-    order = @payload[:order]
 
     begin
-      auth = {:username => @config[:username], :password => @config[:password]}
-      client = OData::Service.new("https://data.shipstation.com/1.1", auth)
+      authenticate_shipstation
+      @order = @payload[:order]
 
       # create the order
-      resource = new_order(order)
-      client.AddToOrders(resource)
+      resource = new_order(@order)
+      @client.AddToOrders(resource)
       shipstation_response = client.save_changes
 
       # create the line items
       @shipstation_id = shipstatino_response.first.OrderID
       new_order_items(order[:line_items], @shipstation_id).each do |resource|
-        client.AddToOrderItems(resource)
+        @client.AddToOrderItems(resource)
       end
       client.save_changes
 
@@ -24,11 +24,42 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     end
 
     # return a partial order object with the shipstation id
-    add_object :order, {id: order[:id], shipstation_id: @shipstation_id}
+    add_object :order, {id: @order[:id], shipstation_id: @shipstation_id}
     result 200, "Order created in ShipStation: #{@shipstation_id}"
   end
 
+  post '/get_shipments' do
+
+    begin
+      authenticate_shipstation
+
+      @client.Shipments.filter("ShipDate ge datetime'#{@config[:since]}'")
+      shipstation_result = @client.execute
+
+      # TODO - get shipping carrier, etc.
+      shipstation_result.each do |resource|
+        add_object :shipment, {
+          id: resource.ShipmentID,
+          tracking: resource.TrackingNumber,
+          shipstation_order_id: resource.OrderID
+        }
+      end
+      @kount = shipstation_result.count
+    rescue => e
+      # tell the hub about the unsuccessful get attempt
+      result 500, "Unable to get orders from ShipStation. Error: #{e.message}"
+    end
+
+    result 200, "Retrieved #{@kount} shipments from ShipStation"
+  end
+
   private
+
+  def authenticate_shipstation
+    auth = {:username => @config[:username], :password => @config[:password]}
+    @client = OData::Service.new("https://data.shipstation.com/1.1", auth)
+  end
+
   def new_order(order)
     raise ":shipping_address required" unless order[:shipping_address]
     resource = Order.new
