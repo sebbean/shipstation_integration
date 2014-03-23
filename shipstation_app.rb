@@ -1,46 +1,31 @@
-require 'sinatra'
-require 'json'
-require 'active_support/core_ext/hash/indifferent_access'
-require 'ruby_odata'
-
-class ShipStationApp < Sinatra::Base
+class ShipStationApp < EndpointBase::Sinatra::Base
   post '/add_order' do
-    content_type :json
-    payload = JSON.parse(request.body.read).with_indifferent_access
-    request_id = payload[:request_id]
-    order = payload[:order]
-    params = payload[:parameters]
+    order = @payload[:order]
 
     begin
-      auth = {:username => params[:username], :password => params[:password]}
+      auth = {:username => @config[:username], :password => @config[:password]}
       client = OData::Service.new("https://data.shipstation.com/1.1", auth)
 
       # create the order
       resource = new_order(order)
       client.AddToOrders(resource)
-      result = client.save_changes
+      shipstation_response = client.save_changes
 
       # create the line items
-      @shipstation_id = result.first.OrderID
+      @shipstation_id = shipstatino_response.first.OrderID
       new_order_items(order[:line_items], @shipstation_id).each do |resource|
         client.AddToOrderItems(resource)
       end
-      result = client.save_changes
+      client.save_changes
 
     rescue => e
       # tell the hub about the unsuccessful create attempt
-      status 500
-      return { request_id: request_id, summary: "Unable to create ShipStation order. Error: #{e.message}" }.to_json + "\n"
+      result 500, "Unable to create ShipStation order. Error: #{e.message}"
     end
 
-    # acknowledge the successful adding of the order
-    response = {
-      request_id: request_id,
-      summary: "Order created in ShipStation: #{@shipstation_id}",
-      orders: [{id: order[:id], shipstation_id: @shipstation_id}]
-    }
-
-    response.to_json + "\n"
+    # return a partial order object with the shipstation id
+    add_object :order, {id: order[:id], shipstation_id: @shipstation_id}
+    result 200, "Order created in ShipStation: #{@shipstation_id}"
   end
 
   private
