@@ -70,7 +70,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource = Order.new
     resource.BuyerEmail = order[:email]
     resource.MarketplaceID = 0
-    #resource.NotesFromBuyer = "Will pick up"
+    resource.NotesFromBuyer = order[:delivery_instructions]
     resource.OrderDate = order[:placed_on]
     resource.OrderNumber = order[:id]
     resource.OrderStatusID = 2
