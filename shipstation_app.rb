@@ -41,9 +41,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       # TODO - get shipping carrier, etc.
       shipstation_result.each do |resource|
         add_object :shipment, {
-          id: resource.ShipmentID,
+          id: resource.ShipmentID.to_s,
           tracking: resource.TrackingNumber,
-          order_id: resource.OrderID
+          order_id: resource.OrderID.to_s
         }
       end
       @kount = shipstation_result.count
