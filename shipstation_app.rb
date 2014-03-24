@@ -14,7 +14,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       # create the line items
       @shipstation_id = shipstation_response.first.OrderID
 
-      new_order_items(order[:line_items], @shipstation_id).each do |resource|
+      new_order_items(@order[:line_items], @shipstation_id).each do |resource|
         @client.AddToOrderItems(resource)
       end
       @client.save_changes
