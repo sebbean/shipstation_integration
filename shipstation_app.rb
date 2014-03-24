@@ -1,4 +1,5 @@
 class ShipStationApp < EndpointBase::Sinatra::Base
+  set :public_folder, 'public'
 
   post '/add_order' do
 
