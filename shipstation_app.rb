@@ -49,7 +49,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       @kount = shipstation_result.count
 
       # return current timestamp so parameter updates
-      add_parameter ‘since’, Time.now.utc
+      add_parameter 'since', Time.now.utc
     rescue => e
       # tell the hub about the unsuccessful get attempt
       result 500, "Unable to get orders from ShipStation. Error: #{e.message}"
