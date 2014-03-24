@@ -9,14 +9,15 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       # create the order
       resource = new_order(@order)
       @client.AddToOrders(resource)
-      shipstation_response = client.save_changes
+      shipstation_response = @client.save_changes
 
       # create the line items
-      @shipstation_id = shipstatino_response.first.OrderID
+      @shipstation_id = shipstation_response.first.OrderID
+
       new_order_items(order[:line_items], @shipstation_id).each do |resource|
         @client.AddToOrderItems(resource)
       end
-      client.save_changes
+      @client.save_changes
 
     rescue => e
       # tell the hub about the unsuccessful create attempt
