@@ -57,7 +57,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       add_parameter 'since', Time.now.utc.beginning_of_day
     rescue => e
       # tell the hub about the unsuccessful get attempt
-      result 500, "Unable to get orders from ShipStation. Error: #{e.message}"
+      result 500, "Unable to get shipments from ShipStation. Error: #{e.message}"
     end
 
     result 200, "Retrieved #{@kount} shipments from ShipStation"
