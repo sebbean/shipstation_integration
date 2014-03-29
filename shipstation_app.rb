@@ -35,7 +35,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     begin
       authenticate_shipstation
 
-      @client.Shipments.filter("ShipDate ge datetime'#{@config[:since]}'")
+      # Shipstation doesn't record time information - just date, so round the parameter down
+      since = Time.parse(@config[:since]).utc.beginning_of_day
+
+      @client.Shipments.filter("ShipDate ge datetime'#{since}'")
       shipstation_result = @client.execute
 
       # TODO - get shipping carrier, etc.
@@ -48,8 +51,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       end
       @kount = shipstation_result.count
 
-      # return current timestamp so parameter updates
-      add_parameter 'since', Time.now.utc
+      # return current timestamp so parameter updates on hub side
+      # NOTE: shipstation doesn't provide detail beyond date so we need to round it down in order
+      # to not miss any shipments
+      add_parameter 'since', Time.now.utc.beginning_of_day
     rescue => e
       # tell the hub about the unsuccessful get attempt
       result 500, "Unable to get orders from ShipStation. Error: #{e.message}"
