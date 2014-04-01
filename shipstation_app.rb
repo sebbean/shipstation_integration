@@ -68,9 +68,6 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   def authenticate_shipstation
     auth = {:username => @config[:username], :password => @config[:password]}
     @client = OData::Service.new("https://data.shipstation.com/1.1", auth)
-require 'pry'
-binding.pry
-
   end
 
   def new_order(order)
