@@ -77,6 +77,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.MarketplaceID = 0
     resource.NotesFromBuyer = order[:delivery_instructions]
     resource.OrderDate = order[:placed_on]
+    resource.PayDate = order[:placed_on]
     resource.OrderNumber = order[:id]
     resource.OrderStatusID = 2
     resource.OrderTotal = order[:totals][:order].to_s
