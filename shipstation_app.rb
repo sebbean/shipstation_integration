@@ -68,13 +68,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   def authenticate_shipstation
     auth = {:username => @config[:username], :password => @config[:password]}
     @client = OData::Service.new("https://data.shipstation.com/1.1", auth)
+require 'pry'
+binding.pry
+
   end
 
   def new_order(order)
     raise ":shipping_address required" unless order[:shipping_address]
     resource = Order.new
     resource.BuyerEmail = order[:email]
-    resource.MarketplaceID = 0
+    resource.MarketplaceID = @config[:marketplace_id]
     resource.NotesFromBuyer = order[:delivery_instructions]
     resource.OrderDate = order[:placed_on]
     resource.PayDate = order[:placed_on]
