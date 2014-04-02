@@ -70,6 +70,22 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     @client = OData::Service.new("https://data.shipstation.com/1.1", auth)
   end
 
+  def get_service_id(method_name)
+    service_id = case method_name
+      when 'UPS Ground' then 26 #UPS Ground
+      when 'UPS Express' then 32 #UPS Next Day Air
+      when 'DHL International' then 148 #Express Worldwide
+    end
+  end
+
+  def get_carrier_id(carrier_name)
+    carrier_id = case carrier_name
+      when "UPS" then 3
+      when "DHL" then 13
+      else 0
+    end
+  end
+
   def new_order(order)
     raise ":shipping_address required" unless order[:shipping_address]
     resource = Order.new
@@ -86,6 +102,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.ShipCity = order[:shipping_address][:city]
     #resource.ShipCompany = "FOO" # company name on shipping address
     resource.ShipCountryCode = order[:shipping_address][:country]
+    resource.ProviderID = get_carrier_id(order[:shipping_carrier])
+    resource.ServiceID = get_service_id(order[:shipping_method])
     resource.ShipName = order[:shipping_address][:firstname] + " " + order[:shipping_address][:lastname]
     resource.ShipPhone = order[:shipping_address][:phone]
     resource.ShipPostalCode = order[:shipping_address][:zipcode]
