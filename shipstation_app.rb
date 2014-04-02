@@ -123,6 +123,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       resource.SKU = item[:product_id]
       resource.Description = item[:name]
       resource.UnitPrice = item[:price].to_s
+      resource.ThumbnailUrl = item[:image_url]
+
+      if item[:properties]
+        properties = ""
+        item[:properties].each do |key, value|
+          properties += "#{key}:#{value}\n"
+        end
+        resource.Options = properties
+      end
+
       item_resources << resource
     end
     item_resources
