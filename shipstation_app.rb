@@ -38,7 +38,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       # Shipstation doesn't record time information - just date, so round the parameter down
       since = Time.parse(@config[:since]).utc.beginning_of_day.iso8601
 
-      @client.Shipments.filter("ShipDate ge datetime'#{since}'")
+      @client.Shipments.filter("ModifyDate ge datetime'#{since}' and ShipDate ne null")
       shipstation_result = @client.execute
 
       # TODO - get shipping carrier, etc.
