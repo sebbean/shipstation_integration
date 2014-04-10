@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'i18n'
-gem 'active_support'
+gem 'activesupport'
 gem 'ruby_odata', github: 'visoft/ruby_odata'
 gem 'tilt', '~> 1.4.1'
 gem 'tilt-jbuilder', require: 'sinatra/jbuilder'

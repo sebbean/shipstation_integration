@@ -21,8 +21,6 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    active_support (3.0.0)
-      activesupport (= 3.0.0)
     activesupport (3.0.0)
     addressable (2.3.5)
     coderay (1.1.0)
@@ -71,7 +69,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_support
+  activesupport
   endpoint_base!
   foreman
   i18n
