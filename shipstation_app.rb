@@ -5,6 +5,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
     begin
       authenticate_shipstation
+
       @order = @payload[:order]
 
       # create the order
@@ -73,7 +74,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   def get_service_id(method_name)
     service_id = case method_name
       when 'UPS Ground' then 26 #UPS Ground
-      when 'UPS Express' then 32 #UPS Next Day Air
+      when 'UPS Express' then 31 #UPS Next Day Air Saver
       when 'DHL International' then 148 #Express Worldwide
     end
   end
