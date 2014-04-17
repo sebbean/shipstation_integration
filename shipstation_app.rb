@@ -95,6 +95,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.NotesFromBuyer = order[:delivery_instructions]
     resource.OrderDate = order[:placed_on]
     resource.PayDate = order[:placed_on]
+    resource.PackageTypeID = 3 # This is equivalent to 'Package'
     resource.OrderNumber = order[:id]
     resource.OrderStatusID = 2
     resource.StoreID = @config[:shipstation_store_id]
