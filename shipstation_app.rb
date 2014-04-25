@@ -1,5 +1,11 @@
 class ShipStationApp < EndpointBase::Sinatra::Base
   set :public_folder, 'public'
+  set :logging, true
+
+  Honeybadger.configure do |config|
+    config.api_key = ENV['HONEYBADGER_KEY']
+    config.environment_name = ENV['RACK_ENV']
+  end
 
   post '/add_order' do
 
@@ -22,6 +28,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       @client.save_changes
 
     rescue => e
+      # tell Honeybadger
+      log_exception(e)
+
       # tell the hub about the unsuccessful create attempt
       result 500, "Unable to create ShipStation order. Error: #{e.message}"
     end
@@ -57,6 +66,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       # to not miss any shipments
       add_parameter 'since', Time.now.utc.beginning_of_day
     rescue => e
+      # tell Honeybadger
+      log_exception(e)
+
       # tell the hub about the unsuccessful get attempt
       result 500, "Unable to get shipments from ShipStation. Error: #{e.message}"
     end

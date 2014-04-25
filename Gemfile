@@ -9,6 +9,7 @@ gem 'tilt-jbuilder', require: 'sinatra/jbuilder'
 gem 'endpoint_base', github: 'spree/endpoint_base'
 gem 'foreman'
 gem 'unicorn'
+gem 'honeybadger'
 
 group :development do
   gem 'pry'
