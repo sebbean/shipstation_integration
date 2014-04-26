@@ -40,6 +40,36 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     result 200, "Order created in ShipStation: #{@shipstation_id}"
   end
 
+  # Use this to lookup the real id of the order based on the shipstation shipment id and map
+  # the shipment tracking information to it
+  post '/map_tracking' do
+    begin
+      authenticate_shipstation
+
+      @shipment = @payload[:shipment]
+
+      @client.Orders.filter("OrderID eq #{@shipment[:order_id]}")
+      resource = @client.execute.first
+      @order_number = resource.OrderNumber
+
+      # now we can get the real order number and update with the tracking information
+      add_object :order, {
+        id: @order_number,
+        tracking: @shipment[:tracking],
+        shipping_status: "shipped"
+      }
+
+    rescue => e
+      # tell Honeybadger
+      log_exception(e)
+
+      # tell the hub about the unsuccessful get attempt
+      result 500, "Unable to get order from ShipStation. Error: #{e.message}"
+    end
+
+    result 200, "Order #{@order_number} has shipped with tracking: #{@shipment[:tracking]}"
+  end
+
   post '/get_shipments' do
 
     begin
