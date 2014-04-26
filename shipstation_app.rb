@@ -55,7 +55,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       # now we can get the real order number and update with the tracking information
       add_object :order, {
         id: @order_number,
-        tracking: @shipment[:tracking],
+        tracking_number: @shipment[:tracking],
         shipping_status: "shipped"
       }
 
