@@ -47,17 +47,24 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       authenticate_shipstation
 
       @shipment = @payload[:shipment]
+      store_id = @config[:shipstation_store_id]
 
       @client.Orders.filter("OrderID eq #{@shipment[:order_id]}")
+
       resource = @client.execute.first
       @order_number = resource.OrderNumber
 
-      # now we can get the real order number and update with the tracking information
-      add_object :order, {
-        id: @order_number,
-        tracking_number: @shipment[:tracking],
-        shipping_status: "shipped"
-      }
+      # in some cases we might not be interested in orders from other stores (manual orders, etc.)
+      if store_id.blank? || (store_id.to_i == resource.StoreID)
+        # now we can get the real order number and update with the tracking information
+        add_object :order, {
+          id: @order_number,
+          tracking_number: @shipment[:tracking],
+          shipping_status: "shipped"
+        }
+      else
+        result 200, "Order does not match the specified store id: #{store_id}"
+      end
 
     rescue => e
       # tell Honeybadger
