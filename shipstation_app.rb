@@ -147,7 +147,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.PackageTypeID = 3 # This is equivalent to 'Package'
     resource.OrderNumber = order[:id]
     resource.OrderStatusID = 2
-    resource.StoreID = @config[:shipstation_store_id]
+    resource.StoreID = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
     resource.OrderTotal = order[:totals][:order].to_s
     #resource.RequestedShippingService = "USPS Priority Mail"
     resource.ShipCity = order[:shipping_address][:city]
