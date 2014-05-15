@@ -14,3 +14,8 @@ gem 'honeybadger'
 group :development do
   gem 'pry'
 end
+
+group :development, :test do
+  gem 'pry-byebug'
+end
+
