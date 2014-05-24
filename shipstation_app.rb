@@ -7,22 +7,25 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     config.environment_name = ENV['RACK_ENV']
   end
 
-  post '/add_order' do
+  post '/add_shipment' do
+    # Shipstation wants orders and then it creates shipments. This integration assumes the
+    # shipments are already split and will just create "orders" that are identical to the
+    # storefront concept of a shipment.
 
     begin
       authenticate_shipstation
 
-      @order = @payload[:order]
+      @shipment = @payload[:shipment]
 
       # create the order
-      resource = new_order(@order)
+      resource = new_order(@shipment)
       @client.AddToOrders(resource)
       shipstation_response = @client.save_changes
 
-      # create the line items
       @shipstation_id = shipstation_response.first.OrderID
 
-      new_order_items(@order[:line_items], @shipstation_id).each do |resource|
+      # create the line items
+      new_items(@shipment[:items], @shipstation_id).each do |resource|
         @client.AddToOrderItems(resource)
       end
       @client.save_changes
@@ -32,16 +35,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       log_exception(e)
 
       # tell the hub about the unsuccessful create attempt
-      result 500, "Unable to create ShipStation order. Error: #{e.message}"
+      result 500, "Unable to send shipment to ShipStation. Error: #{e.message}"
     end
 
     # return a partial order object with the shipstation id
-    add_object :order, {id: @order[:id], shipstation_id: @shipstation_id}
-    result 200, "Order created in ShipStation: #{@shipstation_id}"
+    # add_object :order, {id: @order[:id], shipstation_id: @shipstation_id}
+    result 200, "Shipment transmitted to ShipStation: #{@shipstation_id}"
   end
 
-  # Use this to lookup the real id of the order based on the shipstation shipment id and map
-  # the shipment tracking information to it
+  Use this to lookup the real id of the order based on the shipstation shipment id and map
+  the shipment tracking information to it
   post '/map_tracking' do
     begin
       authenticate_shipstation
@@ -136,35 +139,32 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     end
   end
 
-  def new_order(order)
-    raise ":shipping_address required" unless order[:shipping_address]
+  def new_order(shipment)
     resource = Order.new
-    resource.BuyerEmail = order[:email]
-    resource.MarketplaceID = @config[:marketplace_id]
-    resource.NotesFromBuyer = order[:delivery_instructions]
-    resource.OrderDate = order[:placed_on]
-    resource.PayDate = order[:placed_on]
+    resource.BuyerEmail = shipment[:email]
+    resource.NotesFromBuyer = shipment[:delivery_instructions]
     resource.PackageTypeID = 3 # This is equivalent to 'Package'
-    resource.OrderNumber = order[:id]
+    resource.OrderNumber = shipment[:order_id]
     resource.OrderStatusID = 2
     resource.StoreID = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
-    resource.OrderTotal = order[:totals][:order].to_s
-    #resource.RequestedShippingService = "USPS Priority Mail"
-    resource.ShipCity = order[:shipping_address][:city]
-    #resource.ShipCompany = "FOO" # company name on shipping address
-    resource.ShipCountryCode = order[:shipping_address][:country]
-    resource.ProviderID = get_carrier_id(order[:shipping_carrier])
-    resource.ServiceID = get_service_id(order[:shipping_method])
-    resource.ShipName = order[:shipping_address][:firstname] + " " + order[:shipping_address][:lastname]
-    resource.ShipPhone = order[:shipping_address][:phone]
-    resource.ShipPostalCode = order[:shipping_address][:zipcode]
-    resource.ShipState = order[:shipping_address][:state]
-    resource.ShipStreet1 = order[:shipping_address][:address1]
-    resource.ShipStreet2 = order[:shipping_address][:address2]
+    resource.ShipCity = shipment[:shipping_address][:city]
+    resource.ShipCountryCode = shipment[:shipping_address][:country]
+    resource.ProviderID = get_carrier_id(shipment[:shipping_carrier])
+    resource.ServiceID = get_service_id(shipment[:shipping_method])
+    resource.ShipName = shipment[:shipping_address][:firstname] + " " + shipment[:shipping_address][:lastname]
+    resource.ShipPhone = shipment[:shipping_address][:phone]
+    resource.ShipPostalCode = shipment[:shipping_address][:zipcode]
+    resource.ShipState = shipment[:shipping_address][:state]
+    resource.ShipStreet1 = shipment[:shipping_address][:address1]
+    resource.ShipStreet2 = shipment[:shipping_address][:address2]
+    # resource.MarketplaceID = @config[:marketplace_id]
+    resource.OrderDate = shipment[:created_at]
+    resource.PayDate = shipment[:created_at]
+    resource.OrderTotal = shipment[:order_total]
     resource
   end
 
-  def new_order_items(line_items, shipstation_id)
+  def new_items(line_items, shipstation_id)
     item_resources = []
 
     line_items.each do |item|
