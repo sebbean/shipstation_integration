@@ -43,8 +43,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     result 200, "Shipment transmitted to ShipStation: #{@shipstation_id}"
   end
 
-  Use this to lookup the real id of the order based on the shipstation shipment id and map
-  the shipment tracking information to it
+  # Use this to lookup the real id of the order based on the shipstation shipment id and map
+  # the shipment tracking information to it
   post '/map_tracking' do
     begin
       authenticate_shipstation
