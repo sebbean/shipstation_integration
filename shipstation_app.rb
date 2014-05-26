@@ -114,7 +114,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.BuyerEmail = shipment[:email]
     resource.NotesFromBuyer = shipment[:delivery_instructions]
     resource.PackageTypeID = 3 # This is equivalent to 'Package'
-    resource.OrderNumber = shipment[:order_id]
+    resource.OrderNumber = shipment[:id]
     resource.OrderStatusID = 2
     resource.StoreID = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
     resource.ShipCity = shipment[:shipping_address][:city]
