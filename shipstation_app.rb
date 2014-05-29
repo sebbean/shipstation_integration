@@ -116,7 +116,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.NotesFromBuyer = shipment[:delivery_instructions]
     resource.PackageTypeID = 3 # This is equivalent to 'Package'
     resource.OrderNumber = shipment[:id]
-    resource.OrderStatusID = 2
+    if shipment[:status] == 'hold'
+      resource.OrderStatusID = 5
+      resource.HoldUntil = shipment[:hold_until]
+    else
+      resource.OrderStatusID = 2
+    end
     resource.StoreID = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
     resource.ShipCity = shipment[:shipping_address][:city]
     resource.ShipCountryCode = shipment[:shipping_address][:country]
