@@ -104,18 +104,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def get_service_id(method_name)
-    service_id = case method_name
-      when 'UPS Ground' then 26 #UPS Ground
-      when 'UPS Express' then 31 #UPS Next Day Air Saver
-      when 'DHL International' then 148 #Express Worldwide
+    @client.ShippingServices.filter("Name eq '#{ method_name }'")
+    if method = @client.execute.first
+      method.ShippingServiceID
     end
   end
 
   def get_carrier_id(carrier_name)
-    carrier_id = case carrier_name
-      when "UPS" then 3
-      when "DHL" then 13
-      else 0
+    @client.ShippingProviders.filter("Name eq '#{carrier_name}'")
+    if carrier = @client.execute.first
+      carrier.CarrierID
     end
   end
 
