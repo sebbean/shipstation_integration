@@ -67,7 +67,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
           id: shipment_number,
           tracking: resource.TrackingNumber,
           shipstation_id: resource.ShipmentID.to_s,
-          status: "shipped"
+          status: "shipped",
+          shipping_address: {
+            address1:  order_resource.ShipStreet1,
+            address2:  order_resource.ShipStreet2,
+            zipcode:   order_resource.ShipPostalCode,
+            city:      order_resource.ShipCity,
+            state:     order_resource.ShipState,
+            country:   order_resource.ShipCountryCode,
+            phone:     order_resource.ShipPhone
+          }
         }
       end
       @kount = shipstation_result.count
