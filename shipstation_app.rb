@@ -107,6 +107,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     @client.ShippingServices.filter("Name eq '#{ method_name }'")
     if method = @client.execute.first
       method.ShippingServiceID
+    else
+      raise "Shipping method '#{ method_name }' not found in ShipStation"
     end
   end
 
@@ -114,6 +116,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     @client.ShippingProviders.filter("Name eq '#{carrier_name}'")
     if carrier = @client.execute.first
       carrier.CarrierID
+    else
+      raise "Carrier '#{ carrier_name }' not found in ShipStation"
     end
   end
 

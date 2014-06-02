@@ -13,6 +13,7 @@ gem 'honeybadger'
 
 group :development do
   gem 'pry'
+  gem 'shotgun'
 end
 
 group :development, :test do
