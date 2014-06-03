@@ -43,6 +43,33 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     result 200, "Shipment transmitted to ShipStation: #{@shipstation_id}"
   end
 
+  post '/update_shipment' do
+    begin
+      authenticate_shipstation
+
+      @shipment = @payload[:shipment]
+
+      # NOP if shipment has been already shipped?
+      # possibly to avoid infinite loops with update_shipment <-> get_shipments
+      if @shipment[:status] == "shipped"
+        return result 200, "Won't update shipped shipments"
+      end
+
+      @client.Orders.filter("OrderNumber eq '#{ @shipment[:id] }'")
+      if order = @client.execute.first
+        resource = new_order(@shipment, order)
+
+        @shipstation_id = resource.OrderID
+        @client.update_object resource
+        @client.save_changes
+
+        result 200, "Shipment update transmitted in ShipStation: #{@shipstation_id}"
+      else
+        result 200, "Shipment transmitted to ShipStation: #{@shipstation_id}"
+      end
+    end
+  end
+
   post '/get_shipments' do
 
     begin
@@ -121,8 +148,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     end
   end
 
-  def new_order(shipment)
-    resource = Order.new
+  def new_order(shipment, resource = Order.new)
     resource.BuyerEmail = shipment[:email]
     resource.NotesFromBuyer = shipment[:delivery_instructions]
     resource.PackageTypeID = 3 # This is equivalent to 'Package'
