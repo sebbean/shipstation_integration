@@ -61,9 +61,25 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
       @client.Orders.filter("OrderNumber eq '#{ @shipment[:id] }'")
       if order = @client.execute.first
-        resource = new_order(@shipment, order)
 
+        # update order
+        resource = new_order(@shipment, order)
         @client.update_object(resource)
+        @client.save_changes
+
+        # update items
+        @client.OrderItems.filter("OrderID eq #{resource.OrderID}")
+        items = @client.execute
+
+        # delete old ones
+        items.each do |item|
+          @client.delete_object(item)
+        end
+
+        # add current ones
+        new_items(@shipment[:items], resource.OrderID).each do |resource|
+          @client.AddToOrderItems(resource)
+        end
         @client.save_changes
 
         result 200, "Shipment update transmitted in ShipStation: #{ resource.OrderID }"
