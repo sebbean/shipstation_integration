@@ -2,6 +2,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   set :public_folder, 'public'
   set :logging, true
 
+  STATUS_ON_HOLD           = 5
+  STATUS_CANCELLED         = 4
+  STATUS_AWAITING_SHIPMENT = 2
+
   Honeybadger.configure do |config|
     config.api_key = ENV['HONEYBADGER_KEY']
     config.environment_name = ENV['RACK_ENV']
@@ -49,23 +53,22 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
       @shipment = @payload[:shipment]
 
-      # NOP if shipment has been already shipped?
+      # NOP if shipment has been already shipped / cancelled?
       # possibly to avoid infinite loops with update_shipment <-> get_shipments
-      if @shipment[:status] == "shipped"
-        return result 200, "Won't update shipped shipments"
+      if @shipment[:status] == "shipped" || @shipment[:status] =~ /cancell?ed/
+        return result 200, "Can't update Order when status is #{ @shipment[:status] }"
       end
 
       @client.Orders.filter("OrderNumber eq '#{ @shipment[:id] }'")
       if order = @client.execute.first
         resource = new_order(@shipment, order)
 
-        @shipstation_id = resource.OrderID
-        @client.update_object resource
+        @client.update_object(resource)
         @client.save_changes
 
-        result 200, "Shipment update transmitted in ShipStation: #{@shipstation_id}"
+        result 200, "Shipment update transmitted in ShipStation: #{ resource.OrderID }"
       else
-        result 200, "Shipment transmitted to ShipStation: #{@shipstation_id}"
+        result 200, "Order #{ @shipment[:id] } not found in ShipStation."
       end
     end
   end
@@ -153,12 +156,17 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.NotesFromBuyer = shipment[:delivery_instructions]
     resource.PackageTypeID = 3 # This is equivalent to 'Package'
     resource.OrderNumber = shipment[:id]
-    if shipment[:status] == 'hold'
-      resource.OrderStatusID = 5
+
+    case shipment[:status]
+    when 'hold'
+      resource.OrderStatusID = STATUS_ON_HOLD
       resource.HoldUntil = shipment[:hold_until]
+    when /cancell?ed/
+      resource.OrderStatusID = STATUS_CANCELLED
     else
-      resource.OrderStatusID = 2
+      resource.OrderStatusID = STATUS_AWAITING_SHIPMENT
     end
+
     resource.StoreID = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
     resource.ShipCity = shipment[:shipping_address][:city]
     resource.ShipCountryCode = shipment[:shipping_address][:country]
@@ -178,9 +186,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def new_items(line_items, shipstation_id)
-    item_resources = []
-
-    line_items.each do |item|
+    line_items.map do |item|
       resource = OrderItem.new
       resource.OrderID = shipstation_id
       resource.Quantity = item[:quantity]
@@ -197,8 +203,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
         resource.Options = properties
       end
 
-      item_resources << resource
+      resource
     end
-    item_resources
   end
 end
