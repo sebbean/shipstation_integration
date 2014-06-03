@@ -86,6 +86,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       else
         result 200, "Order #{ @shipment[:id] } not found in ShipStation."
       end
+    rescue => e
+      # tell Honeybadger
+      log_exception(e)
+
+      # tell the hub about the unsuccessful get attempt
+      result 500, "Unable to update shipment in ShipStation. Error: #{e.message}"
     end
   end
 
