@@ -145,7 +145,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       result 500, "Unable to get shipments from ShipStation. Error: #{e.message}"
     end
 
-    result 200, "Retrieved #{@kount} shipments from ShipStation"
+    set_summary "Retrieved #{@kount} shipments from ShipStation" if @kount > 0
+    result 200
   end
 
   private
