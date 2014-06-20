@@ -210,7 +210,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # resource.MarketplaceID = @config[:marketplace_id]
     resource.OrderDate = shipment[:created_at]
     resource.PayDate = shipment[:created_at]
-    resource.OrderTotal = shipment[:order_total]
+    resource.OrderTotal = shipment[:order_total].to_s
     resource
   end
 
