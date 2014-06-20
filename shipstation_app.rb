@@ -181,10 +181,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def new_order(shipment, resource = Order.new)
-    resource.BuyerEmail = shipment[:email]
+    resource.BuyerEmail     = shipment[:email]
     resource.NotesFromBuyer = shipment[:delivery_instructions]
-    resource.PackageTypeID = 3 # This is equivalent to 'Package'
-    resource.OrderNumber = shipment[:id]
+    resource.PackageTypeID  = 3 # This is equivalent to 'Package'
+    resource.OrderNumber    = shipment[:id]
 
     case shipment[:status]
     when 'hold'
@@ -196,32 +196,31 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       resource.OrderStatusID = STATUS_AWAITING_SHIPMENT
     end
 
-    resource.StoreID = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
-    resource.ShipCity = shipment[:shipping_address][:city]
+    resource.StoreID         = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
+    resource.ShipCity        = shipment[:shipping_address][:city]
     resource.ShipCountryCode = shipment[:shipping_address][:country]
-    resource.ProviderID = get_carrier_id(shipment[:shipping_carrier])
-    resource.ServiceID = get_service_id(shipment[:shipping_method])
-    resource.ShipName = shipment[:shipping_address][:firstname] + " " + shipment[:shipping_address][:lastname]
-    resource.ShipPhone = shipment[:shipping_address][:phone]
-    resource.ShipPostalCode = shipment[:shipping_address][:zipcode]
-    resource.ShipState = shipment[:shipping_address][:state]
-    resource.ShipStreet1 = shipment[:shipping_address][:address1]
-    resource.ShipStreet2 = shipment[:shipping_address][:address2]
-    # resource.MarketplaceID = @config[:marketplace_id]
-    resource.OrderDate = shipment[:created_at] || Time.now.utc
-    resource.PayDate = shipment[:created_at] || Time.now.utc
-    resource.OrderTotal = shipment[:order_total].to_f.to_s
+    resource.ProviderID      = get_carrier_id(shipment[:shipping_carrier])
+    resource.ServiceID       = get_service_id(shipment[:shipping_method])
+    resource.ShipName        = shipment[:shipping_address][:firstname] + " " + shipment[:shipping_address][:lastname]
+    resource.ShipPhone       = shipment[:shipping_address][:phone]
+    resource.ShipPostalCode  = shipment[:shipping_address][:zipcode]
+    resource.ShipState       = shipment[:shipping_address][:state]
+    resource.ShipStreet1     = shipment[:shipping_address][:address1]
+    resource.ShipStreet2     = shipment[:shipping_address][:address2]
+    resource.OrderDate       = shipment[:created_at] || Time.now.utc
+    resource.PayDate         = shipment[:created_at] || Time.now.utc
+    resource.OrderTotal      = shipment[:order_total].to_f.to_s
     resource
   end
 
   def new_items(line_items, shipstation_id)
     line_items.map do |item|
-      resource = OrderItem.new
-      resource.OrderID = shipstation_id
-      resource.Quantity = item[:quantity]
-      resource.SKU = item[:product_id]
-      resource.Description = item[:name]
-      resource.UnitPrice = item[:price].to_s
+      resource              = OrderItem.new
+      resource.OrderID      = shipstation_id
+      resource.Quantity     = item[:quantity]
+      resource.SKU          = item[:product_id]
+      resource.Description  = item[:name]
+      resource.UnitPrice    = item[:price].to_s
       resource.ThumbnailUrl = item[:image_url]
 
       if item[:properties]
