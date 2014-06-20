@@ -208,9 +208,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.ShipStreet1 = shipment[:shipping_address][:address1]
     resource.ShipStreet2 = shipment[:shipping_address][:address2]
     # resource.MarketplaceID = @config[:marketplace_id]
-    resource.OrderDate = shipment[:created_at]
-    resource.PayDate = shipment[:created_at]
-    resource.OrderTotal = shipment[:order_total].to_s
+    resource.OrderDate = shipment[:created_at] || Time.now.utc
+    resource.PayDate = shipment[:created_at] || Time.now.utc
+    resource.OrderTotal = shipment[:order_total].to_f.to_s
     resource
   end
 
