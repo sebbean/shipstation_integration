@@ -115,12 +115,18 @@ class ShipStationApp < EndpointBase::Sinatra::Base
         order_resource = @client.execute.first
         shipment_number = order_resource.OrderNumber
 
+        full_name = order_resource.ShipName.to_s
+        firstname = full_name.split(" ").first
+        lastname = full_name.split(" ").last
+
         add_object :shipment, {
           id: shipment_number,
           tracking: resource.TrackingNumber,
           shipstation_id: resource.ShipmentID.to_s,
           status: "shipped",
           shipping_address: {
+            firstname: firstname,
+            lastname:  lastname,
             address1:  order_resource.ShipStreet1,
             address2:  order_resource.ShipStreet2,
             zipcode:   order_resource.ShipPostalCode,
