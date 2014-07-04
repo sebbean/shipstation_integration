@@ -209,8 +209,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.ShipState       = shipment[:shipping_address][:state]
     resource.ShipStreet1     = shipment[:shipping_address][:address1]
     resource.ShipStreet2     = shipment[:shipping_address][:address2]
-    resource.OrderDate       = shipment[:created_at] || Time.now.utc
-    resource.PayDate         = shipment[:created_at] || Time.now.utc
+    resource.OrderDate       = shipment[:created_at] || Time.now
+    resource.PayDate         = shipment[:created_at] || Time.now
     resource.OrderTotal      = shipment[:order_total].to_f.to_s
     resource
   end
