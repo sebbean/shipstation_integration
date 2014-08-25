@@ -201,8 +201,14 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.StoreID         = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
     resource.ShipCity        = shipment[:shipping_address][:city]
     resource.ShipCountryCode = shipment[:shipping_address][:country]
-    resource.ProviderID      = get_carrier_id(shipment[:shipping_carrier])
-    resource.ServiceID       = get_service_id(shipment[:shipping_method])
+
+    if shipment[:requested_shipping_service].present?
+      resource.RequestedShippingService = shipment[:requested_shipping_service]
+    else
+      resource.ProviderID      = get_carrier_id(shipment[:shipping_carrier])
+      resource.ServiceID       = get_service_id(shipment[:shipping_method])
+    end
+
     resource.ShipName        = shipment[:shipping_address][:firstname] + " " + shipment[:shipping_address][:lastname]
     resource.ShipPhone       = shipment[:shipping_address][:phone]
     resource.ShipPostalCode  = shipment[:shipping_address][:zipcode]

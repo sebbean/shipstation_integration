@@ -46,7 +46,7 @@ describe ShipStationApp do
         request_id: '123',
         parameters: config,
         shipment: {
-          id: "bruno-custom-international-test2",
+          id: "bruno-custom-shipment",
           shipping_address: {
             firstname: "Bruno",
             lastname: "Buccolo",
@@ -70,6 +70,16 @@ describe ShipStationApp do
           created_at: "2014-06-02T15:38:23Z"
         }
       }
+    end
+
+    it 'creates a shipment with a requested_shipping_service' do
+      VCR.use_cassette('add_shipment_requested_shipping_service') do
+        request[:shipment][:requested_shipping_service] = "Cucamonga Express"
+
+        post '/add_shipment', request.to_json, {}
+      end
+
+      expect(json_response["summary"]).to eq "Shipment transmitted to ShipStation: 66340085"
     end
 
     it 'creates a shipment' do
