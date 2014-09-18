@@ -218,6 +218,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.OrderDate       = shipment[:created_at] || Time.now
     resource.PayDate         = shipment[:created_at] || Time.now
     resource.OrderTotal      = shipment[:order_total].to_f.to_s
+    resource.CustomField1    = shipment[:custom_field_1]
+    resource.CustomField2    = shipment[:custom_field_2]
+    resource.CustomField3    = shipment[:custom_field_3]
     resource
   end
 
