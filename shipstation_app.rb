@@ -53,9 +53,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
       @shipment = @payload[:shipment]
 
-      # NOP if shipment has been already shipped / cancelled?
+      # NOP if shipment has been already shipped
       # possibly to avoid infinite loops with update_shipment <-> get_shipments
-      if @shipment[:status] == "shipped" || @shipment[:status] =~ /cancell?ed/
+      if @shipment[:status] == "shipped"
         return result 200, "Can't update Order when status is #{ @shipment[:status] }"
       end
 
