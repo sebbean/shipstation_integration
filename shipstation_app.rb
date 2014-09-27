@@ -98,53 +98,54 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   post '/get_shipments' do
 
     begin
-      authenticate_shipstation
-
-      since = Time.parse(@config[:since]).iso8601
-
-      @client.Shipments.filter("CreateDate ge datetime'#{since}'")
-      shipstation_result = @client.execute
-
-      # TODO - get shipping carrier, etc.
-      shipstation_result.each do |resource|
-
-        # lookup the shipment (aka order) number that we originally supplied shipstation with
-        @client.Orders.filter("OrderID eq #{resource.OrderID.to_s}")
-
-        order_resource = @client.execute.first
-        shipment_number = order_resource.OrderNumber
-
-        full_name = order_resource.ShipName.to_s
-        firstname = full_name.split(" ").first
-        lastname = full_name.split(" ").last
-
-        add_object :shipment, {
-          id: shipment_number,
-          tracking: resource.TrackingNumber,
-          shipstation_id: resource.ShipmentID.to_s,
-          status: "shipped",
-          shipping_address: {
-            firstname: firstname,
-            lastname:  lastname,
-            address1:  order_resource.ShipStreet1,
-            address2:  order_resource.ShipStreet2,
-            zipcode:   order_resource.ShipPostalCode,
-            city:      order_resource.ShipCity,
-            state:     order_resource.ShipState,
-            country:   order_resource.ShipCountryCode,
-            phone:     order_resource.ShipPhone
-          }
-        }
-      end
-      @kount = shipstation_result.count
 
       # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
       # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
-      # for this the timestamp we use for "now" should be adjusted accordingly.
-      now = (Time.now + Time.zone_offset("PDT")).utc.iso8601
+      # for this the timestamp we use for "since" should be adjusted accordingly.
+      since_time = (Time.parse(@config[:since]) + Time.zone_offset("PDT")).utc
 
-      # Tell Wombat to use the current time as the 'high watermark' the next time it checks
-      add_parameter 'since', now
+      since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
+
+      response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=#{since_date}",
+                             headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}
+
+      if error = response.body["ExceptionMessage"]
+        raise error
+      end
+
+      @kount = 0
+
+      response.body["shipments"].each do |shipment|
+        # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
+        # shipments down further using the timestamp provided
+        next unless Time.parse(shipment["createDate"] + "Z") > since_time
+
+        @kount += 1
+        shipTo = shipment["shipTo"]
+
+        add_object :shipment, {
+          id: shipment["orderId"],
+          tracking: shipment["trackingNumber"],
+          shipstation_id: shipment["shipmentId"],
+          status: "shipped",
+          shipping_address: {
+            firstname: shipTo["name"].split(" ").first,
+            lastname:  shipTo["name"].split(" ").last,
+            address1:  shipTo["street1"],
+            address2:  shipTo["street2"],
+            zipcode:   shipTo["postalCode"],
+            city:      shipTo["city"],
+            state:     shipTo["state"],
+            country:   shipTo["country"],
+            phone:     shipTo["phone"]
+          }
+        }
+
+        @new_since = Time.parse(shipment["createDate"] + "PDT") + 1.second
+      end
+
+      # # Tell Wombat to use the current time as the 'high watermark' the next time it checks
+      add_parameter 'since', @new_since || Time.now
     rescue => e
       # tell Honeybadger
       log_exception(e)
