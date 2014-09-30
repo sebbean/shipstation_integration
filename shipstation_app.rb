@@ -17,22 +17,18 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # storefront concept of a shipment.
 
     begin
-      authenticate_shipstation
+      order = populate_order(@payload[:shipment])
 
-      @shipment = @payload[:shipment]
+      response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
+                              headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key], "content-type" => "application/json"},
+                              parameters: order.to_json
 
-      # create the order
-      resource = new_order(@shipment)
-      @client.AddToOrders(resource)
-      shipstation_response = @client.save_changes
-
-      @shipstation_id = shipstation_response.first.OrderID
-
-      # create the line items
-      new_items(@shipment[:items], @shipstation_id).each do |resource|
-        @client.AddToOrderItems(resource)
+      raise response.body["Message"] if response.code == 400
+      if error = response.body["ExceptionMessage"]
+        raise error
       end
-      @client.save_changes
+
+      @shipstation_id = response.body["orderId"]
 
     rescue => e
       # tell Honeybadger
@@ -160,90 +156,99 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
   private
 
-  def authenticate_shipstation
-    auth = {:username => @config[:username], :password => @config[:password]}
-    @client = OData::Service.new("https://data.shipstation.com/1.1", auth)
-  end
+  def map_carrier(carrier_name)
+    response = Unirest.get "https://shipstation.p.mashape.com/Carriers",
+                           headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}
 
-  def get_service_id(method_name)
-    @client.ShippingServices.filter("Name eq '#{ method_name }'")
-    if method = @client.execute.first
-      method.ShippingServiceID
-    else
-      raise "Shipping method '#{ method_name }' not found in ShipStation"
-    end
-  end
+    raise "Unable to retrieve carrier code for #{carrier_name}" unless response.code == 200
 
-  def get_carrier_id(carrier_name)
-    @client.ShippingProviders.filter("Name eq '#{carrier_name}'")
-    if carrier = @client.execute.first
-      carrier.CarrierID
-    else
-      raise "Carrier '#{ carrier_name }' not found in ShipStation"
-    end
-  end
-
-  def new_order(shipment, resource = Order.new)
-    resource.BuyerEmail     = shipment[:email]
-    resource.NotesFromBuyer = shipment[:delivery_instructions]
-    resource.PackageTypeID  = 3 # This is equivalent to 'Package'
-    resource.OrderNumber    = shipment[:id]
-
-    case shipment[:status]
-    when 'hold'
-      resource.OrderStatusID = STATUS_ON_HOLD
-      resource.HoldUntil = shipment[:hold_until]
-    when /cancell?ed/
-      resource.OrderStatusID = STATUS_CANCELLED
-    else
-      resource.OrderStatusID = STATUS_AWAITING_SHIPMENT
+    response.body.each do |carrier|
+      return carrier["code"] if carrier["name"] == carrier_name
     end
 
-    resource.StoreID         = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
-    resource.ShipCity        = shipment[:shipping_address][:city]
-    resource.ShipCountryCode = shipment[:shipping_address][:country]
-
-    if shipment[:requested_shipping_service].present?
-      resource.RequestedShippingService = shipment[:requested_shipping_service]
-    else
-      resource.ProviderID      = get_carrier_id(shipment[:shipping_carrier])
-      resource.ServiceID       = get_service_id(shipment[:shipping_method])
-    end
-
-    resource.ShipName        = shipment[:shipping_address][:firstname] + " " + shipment[:shipping_address][:lastname]
-    resource.ShipPhone       = shipment[:shipping_address][:phone]
-    resource.ShipPostalCode  = shipment[:shipping_address][:zipcode]
-    resource.ShipState       = shipment[:shipping_address][:state]
-    resource.ShipStreet1     = shipment[:shipping_address][:address1]
-    resource.ShipStreet2     = shipment[:shipping_address][:address2]
-    resource.OrderDate       = shipment[:created_at] || Time.now
-    resource.PayDate         = shipment[:created_at] || Time.now
-    resource.OrderTotal      = shipment[:order_total].to_f.to_s
-    resource.CustomField1    = shipment[:custom_field_1]
-    resource.CustomField2    = shipment[:custom_field_2]
-    resource.CustomField3    = shipment[:custom_field_3]
-    resource
+    raise "There is no carrier named '#{carrier_name}' configured with this ShipStation account"
   end
 
-  def new_items(line_items, shipstation_id)
+  def map_service(carrier_code, service_name)
+    response = Unirest.get "https://shipstation.p.mashape.com/Carriers/ListServices?carrierCode=#{carrier_code}",
+                           headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}
+
+    raise "Unable to retrieve service codes for #{carrier_code}" unless response.code == 200
+
+    response.body.each do |service|
+      return service["code"] if service["name"] == service_name
+    end
+
+    raise "There is no service named '#{service_name}' associated wtih the carrier_code of '#{carrier_code}'"
+  end
+
+  def populate_order(shipment)
+    carrier_code = map_carrier(shipment[:shipping_carrier]) #
+    order = {
+      "customerEmail" => shipment[:email],
+      "customerUsername" => shipment[:email],
+      "orderNumber" => shipment[:id], #required
+      "orderDate" => shipment[:created_at] || Time.now,
+      "paymentDate" => shipment[:created_at] || Time.now,
+      "orderStatus" => map_status(shipment[:status]), #required: hold, canceled, awaiting_shipment
+      "shipTo" => populate_address(shipment[:shipping_address]), #required (see populate_address for details)
+      "billTo" => populate_address(shipment[:billing_address]) || populate_address(shipment[:shipping_address]),
+      "customerNotes" => shipment[:delivery_instructions],
+      "packageCode" => 'package',
+      "advancedOptions" => populate_advanced(shipment),
+      "carrierCode" => carrier_code,
+      "serviceCode" => map_service(carrier_code, shipment[:shipping_method]), #required if shipping_carrier is present
+      "items" => populate_items(shipment[:items])
+    }
+  end
+
+  def populate_advanced(shipment)
+    {
+      "storeId" => @config[:shipstation_store_id],
+      "customfield1" => shipment[:custom_field_1],
+      "customfield2" => shipment[:custom_field_2],
+      "customfield3" => shipment[:custom_field_3]
+    }
+  end
+
+  def populate_items(line_items)
+    return if line_items.nil?
     line_items.map do |item|
-      resource              = OrderItem.new
-      resource.OrderID      = shipstation_id
-      resource.Quantity     = item[:quantity]
-      resource.SKU          = item[:product_id]
-      resource.Description  = item[:name]
-      resource.UnitPrice    = item[:price].to_s
-      resource.ThumbnailUrl = item[:image_url]
-
-      if item[:properties]
-        properties = ""
-        item[:properties].each do |key, value|
-          properties += "#{key}:#{value}\n"
-        end
-        resource.Options = properties
-      end
-
-      resource
+      {
+        "lineItemKey" => nil,
+        "sku" => item[:product_id],
+        "name" => item[:name],
+        "imageUrl" => item[:image_url],
+        "quantity" => item[:quantity],
+        "unitPrice" => item[:price]
+      }
     end
   end
+
+  def populate_address(address)
+    return if address.nil?
+    {
+      :name => address[:firstname] + " " + address[:lastname], #required
+      :street1 => address[:address1], #required
+      :street2 => address[:address2],
+      :street3 => address[:address3],
+      :city => address[:city], #required
+      :state => address[:state], #required
+      :postalCode => address[:zipcode], #required
+      :country => address[:country], #required
+      :phone => address[:phone]
+    }
+  end
+
+  def map_status(status)
+    case status
+    when 'hold'
+      'on_hold'
+    when '/cancell?ed/'
+      'canceled'
+    else
+      'awaiting_shipment'
+    end
+  end
+
 end
