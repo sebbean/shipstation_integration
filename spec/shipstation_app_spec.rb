@@ -25,18 +25,20 @@ describe ShipStationApp do
         post '/get_shipments', request.to_json, {}
       end
 
+      expect(json_response["summary"]).to match /Received * shipments from Shipstation/i
       expect(json_response["shipments"].count).to eq 1
       expect(json_response["shipments"][0]["id"]).to eq "bruno-custom-international-test3"
-      expect(json_response["summary"]).to match /shipments from Shipstation/i
+
+      expect(last_response.status).to eq 200
     end
 
     it "doesnt set summary if no shipments found" do
-      client = double("Client", execute: []).as_null_object
-      expect(OData::Service).to receive(:new).and_return client
+      response = double("Response", body: { "shipments" => [] }).as_null_object
+      expect(Unirest).to receive(:get).and_return response
 
       post '/get_shipments', request.to_json, {}
-      expect(last_response.status).to eq 200
       expect(json_response["summary"]).to be_nil
+      expect(last_response.status).to eq 200
     end
   end
 
