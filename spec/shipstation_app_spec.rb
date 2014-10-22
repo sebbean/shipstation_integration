@@ -7,8 +7,9 @@ describe ShipStationApp do
 
   let(:config) do
     {
-      "username" => 'cucamonga',
-      "password" => 'ohyeah'
+      "authorization" => ENV['SHIPSTATION_AUTHORIZATION'],
+      "mashape_key" => ENV['SHIPSTATION_MASHAPE_KEY'],
+      "shipstation_store_id" => ENV['SHIPSTATION_STORE_ID']
     }
   end
 
@@ -16,18 +17,18 @@ describe ShipStationApp do
     let(:request) do
       {
         request_id: '1234567',
-        parameters: config.merge(since: "2014-06-03T00:38:23Z")
+        parameters: config.merge(since: "2014-09-03T00:38:23Z")
       }
     end
 
     it 'returns shipments' do
-      VCR.use_cassette('get_shipments') do
+      VCR.use_cassette("get_shipments/1414012357") do
         post '/get_shipments', request.to_json, {}
       end
 
-      expect(json_response["summary"]).to match /Received * shipments from Shipstation/i
-      expect(json_response["shipments"].count).to eq 1
-      expect(json_response["shipments"][0]["id"]).to eq "bruno-custom-international-test3"
+      expect(json_response["summary"]).to match "Retrieved"
+      expect(json_response["shipments"].count).to be > 1
+      expect(json_response["shipments"][0]["id"]).to be_present
 
       expect(last_response.status).to eq 200
     end
@@ -43,12 +44,14 @@ describe ShipStationApp do
   end
 
   describe 'POST /add_shipment' do
+    let(:id) { "1414012131" }
+
     let(:request) do
       {
         request_id: '123',
         parameters: config,
         shipment: {
-          id: "bruno-custom-shipment",
+          id: "#{id}",
           shipping_address: {
             firstname: "Bruno",
             lastname: "Buccolo",
@@ -75,21 +78,13 @@ describe ShipStationApp do
     end
 
     it 'creates a shipment with a requested_shipping_service' do
-      VCR.use_cassette('add_shipment_requested_shipping_service') do
+      VCR.use_cassette("add_shipment/1414012131") do
         request[:shipment][:requested_shipping_service] = "Cucamonga Express"
-
         post '/add_shipment', request.to_json, {}
       end
 
-      expect(json_response["summary"]).to eq "Shipment transmitted to ShipStation: 66340085"
-    end
-
-    it 'creates a shipment' do
-      VCR.use_cassette('add_shipment') do
-        post '/add_shipment', request.to_json, {}
-      end
-
-      expect(json_response["summary"]).to eq "Shipment transmitted to ShipStation: 109829141"
+      expect(json_response["summary"]).to match "Shipment transmitted to ShipStation"
+      expect(last_response.status).to eq 200
     end
   end
 

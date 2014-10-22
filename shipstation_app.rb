@@ -19,8 +19,14 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     begin
       order = populate_order(@payload[:shipment])
 
+      headers = {
+        "Authorization" => "Basic #{@config[:authorization]}",
+        "X-Mashape-Key" => @config[:mashape_key],
+        "content-type" => "application/json"
+      }
+
       response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
-                              headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key], "content-type" => "application/json"},
+                              headers: headers,
                               parameters: order.to_json
 
       raise response.body["Message"] if response.code == 400
@@ -102,8 +108,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
       since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
 
-      response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=#{since_date}",
-                             headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}
+      headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
+      response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=#{since_date}", headers
 
       if error = response.body["ExceptionMessage"]
         raise error
@@ -157,8 +163,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   private
 
   def map_carrier(carrier_name)
-    response = Unirest.get "https://shipstation.p.mashape.com/Carriers",
-                           headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}
+    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}}
+    response = Unirest.get "https://shipstation.p.mashape.com/Carriers", headers
 
     raise "Unable to retrieve carrier code for #{carrier_name}" unless response.code == 200
 
@@ -170,8 +176,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def map_service(carrier_code, service_name)
-    response = Unirest.get "https://shipstation.p.mashape.com/Carriers/ListServices?carrierCode=#{carrier_code}",
-                           headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}
+    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}}
+    response = Unirest.get "https://shipstation.p.mashape.com/Carriers/ListServices?carrierCode=#{carrier_code}", headers
 
     raise "Unable to retrieve service codes for #{carrier_code}" unless response.code == 200
 
