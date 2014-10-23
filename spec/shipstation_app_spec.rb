@@ -89,12 +89,14 @@ describe ShipStationApp do
   end
 
   describe 'POST /update_shipment' do
+    let(:id) { "1414012131" }
+
     let(:request) do
       {
         request_id: '123',
         parameters: config,
         shipment: {
-          id: "bruno-custom-international-test2",
+          id: id,
           shipping_address: {
             firstname: "Brunow",
             lastname: "Buccolo",
@@ -121,11 +123,16 @@ describe ShipStationApp do
     end
 
     it 'updates a shipment' do
-      VCR.use_cassette('update_shipment') do
+      VCR.use_cassette("update_shipment/#{id}") do
         post '/update_shipment', request.to_json, {}
       end
 
-      expect(json_response["summary"]).to eq "Shipment update transmitted in ShipStation: 109780892"
+      expect(json_response["summary"]).to match "Shipment update transmitted in ShipStation:"
+      expect(last_response.status).to eq 200
     end
+
+    pending "test when shipment not found"
+    pending "test GET order request doesn't 200"
+    pending "test when POST order request returns 400, 401 and 500"
   end
 end

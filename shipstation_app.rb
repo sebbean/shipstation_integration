@@ -35,7 +35,6 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       end
 
       @shipstation_id = response.body["orderId"]
-
     rescue => e
       # tell Honeybadger
       log_exception(e)
@@ -49,10 +48,23 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     result 200, "Shipment transmitted to ShipStation: #{@shipstation_id}"
   end
 
+  # Error response.body examples:
+  #
+  #   400
+  #   => {"Message"=>"The request is invalid.",
+  #   "ModelState"=>
+  #    {"apiOrder.orderNumber"=>["The orderNumber field is required."],
+  #     "apiOrder.orderDate"=>["The orderDate field is required."],
+  #     "apiOrder.orderStatus"=>["The orderStatus field is required."],
+  #     "apiOrder.billTo"=>["The billTo field is required."],
+  #     "apiOrder.shipTo"=>["The shipTo field is required."]}}
+  #
+  #    401
+  #    => {"message"=>
+  #    "Missing Mashape application key. Go to https://www.mashape.com to get your key."}
+  #
   post '/update_shipment' do
     begin
-      authenticate_shipstation
-
       @shipment = @payload[:shipment]
 
       # NOP if shipment has been already shipped
@@ -61,30 +73,30 @@ class ShipStationApp < EndpointBase::Sinatra::Base
         return result 200, "Can't update Order when status is #{ @shipment[:status] }"
       end
 
-      @client.Orders.filter("OrderNumber eq '#{ @shipment[:id] }'")
-      if order = @client.execute.first
+      headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
+      response = Unirest.get "https://shipstation.p.mashape.com/Orders/List?orderNumber=#{@shipment[:id]}", headers
 
-        # update order
-        resource = new_order(@shipment, order)
-        @client.update_object(resource)
-        @client.save_changes
+      orders = response.body["orders"]
+      if orders && order = orders.first
 
-        # update items
-        @client.OrderItems.filter("OrderID eq #{resource.OrderID}")
-        items = @client.execute
+        populated_order = populate_order(@payload[:shipment])
+        populated_order.merge! "orderKey" => order["orderKey"]
 
-        # delete old ones
-        items.each do |item|
-          @client.delete_object(item)
+        headers = {
+          "Authorization" => "Basic #{@config[:authorization]}",
+          "X-Mashape-Key" => @config[:mashape_key],
+          "content-type" => "application/json"
+        }
+        response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
+                                headers: headers,
+                                parameters: populated_order.to_json
+
+        if response.code != 200
+          # NOTE Inspect and return ModelState key in case of 400
+          result 500, response.body["ExceptionMessage"] || response.body["message"] || response.body["Message"]
+        else
+          result 200, "Shipment update transmitted in ShipStation: #{order["orderId"]}"
         end
-
-        # add current ones
-        new_items(@shipment[:items], resource.OrderID).each do |resource|
-          @client.AddToOrderItems(resource)
-        end
-        @client.save_changes
-
-        result 200, "Shipment update transmitted in ShipStation: #{ resource.OrderID }"
       else
         result 200, "Order #{ @shipment[:id] } not found in ShipStation."
       end
@@ -256,5 +268,4 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       'awaiting_shipment'
     end
   end
-
 end
