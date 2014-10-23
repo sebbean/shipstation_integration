@@ -141,8 +141,34 @@ describe ShipStationApp do
         expect(last_response.status).to eq 200
       end
     end
+  end
 
-    pending "test GET order request doesn't 200"
-    pending "test when POST order request returns 400, 401 and 500"
+  it "handles wrong credentials errors" do
+    request = { parameters: config.merge(since: "2014-10-23T00:38:23Z") }
+    request[:parameters][:mashape_key] = "wrong"
+
+    VCR.use_cassette("wrong_key") do
+      post '/get_shipments', request.to_json, {}
+      expect(json_response["summary"]).to match ", API error:"
+      expect(last_response.status).to eq 500
+    end
+  end
+
+  it "handles invalid order object" do
+    request = {
+      parameters: config,
+      shipment: {
+        shipping_address: {},
+        items: [],
+        shipping_carrier: "UPS",
+        shipping_method: "UPS Standard",
+      }
+    }
+
+    VCR.use_cassette("invalid_object") do
+      post '/add_shipment', request.to_json, {}
+      expect(json_response["summary"]).to match ", API error:"
+      expect(last_response.status).to eq 500
+    end
   end
 end
