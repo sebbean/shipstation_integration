@@ -19,36 +19,26 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # shipments are already split and will just create "orders" that are identical to the
     # storefront concept of a shipment.
 
-    begin
-      order = populate_order(@payload[:shipment])
+    order = populate_order(@payload[:shipment])
 
-      headers = {
-        "Authorization" => "Basic #{@config[:authorization]}",
-        "X-Mashape-Key" => @config[:mashape_key],
-        "content-type" => "application/json"
-      }
+    headers = {
+      "Authorization" => "Basic #{@config[:authorization]}",
+      "X-Mashape-Key" => @config[:mashape_key],
+      "content-type" => "application/json"
+    }
 
-      response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
-                              headers: headers,
-                              parameters: order.to_json
+    response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
+                            headers: headers,
+                            parameters: order.to_json
 
-      raise response.body["Message"] if response.code == 400
-      if error = response.body["ExceptionMessage"]
-        raise error
-      end
-
-      @shipstation_id = response.body["orderId"]
-    rescue => e
-      # tell Honeybadger
-      log_exception(e)
-
-      # tell the hub about the unsuccessful create attempt
-      result 500, "Unable to send shipment to ShipStation. Error: #{e.message}"
+    raise response.body["Message"] if response.code == 400
+    if error = response.body["ExceptionMessage"]
+      raise error
     end
 
     # return a partial order object with the shipstation id
     # add_object :order, {id: @order[:id], shipstation_id: @shipstation_id}
-    result 200, "Shipment transmitted to ShipStation: #{@shipstation_id}"
+    result 200, "Shipment transmitted to ShipStation: #{response.body["orderId"]}"
   end
 
   # Error response.body examples:
@@ -67,109 +57,91 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   #    "Missing Mashape application key. Go to https://www.mashape.com to get your key."}
   #
   post '/update_shipment' do
-    begin
-      @shipment = @payload[:shipment]
+    @shipment = @payload[:shipment]
 
-      # NOP if shipment has been already shipped
-      # possibly to avoid infinite loops with update_shipment <-> get_shipments
-      if @shipment[:status] == "shipped"
-        return result 200, "Can't update Order when status is #{ @shipment[:status] }"
-      end
+    # NOP if shipment has been already shipped
+    # possibly to avoid infinite loops with update_shipment <-> get_shipments
+    if @shipment[:status] == "shipped"
+      return result 200, "Can't update Order when status is #{ @shipment[:status] }"
+    end
 
-      headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
-      response = Unirest.get "https://shipstation.p.mashape.com/Orders/List?orderNumber=#{@shipment[:id]}", headers
+    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
+    response = Unirest.get "https://shipstation.p.mashape.com/Orders/List?orderNumber=#{@shipment[:id]}", headers
 
-      orders = response.body["orders"]
-      if orders && order = orders.first
+    orders = response.body["orders"]
+    if orders && order = orders.first
 
-        populated_order = populate_order(@payload[:shipment])
-        populated_order.merge! "orderKey" => order["orderKey"]
+      populated_order = populate_order(@payload[:shipment])
+      populated_order.merge! "orderKey" => order["orderKey"]
 
-        headers = {
-          "Authorization" => "Basic #{@config[:authorization]}",
-          "X-Mashape-Key" => @config[:mashape_key],
-          "content-type" => "application/json"
-        }
-        response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
-                                headers: headers,
-                                parameters: populated_order.to_json
+      headers = {
+        "Authorization" => "Basic #{@config[:authorization]}",
+        "X-Mashape-Key" => @config[:mashape_key],
+        "content-type" => "application/json"
+      }
+      response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
+                              headers: headers,
+                              parameters: populated_order.to_json
 
-        if response.code != 200
-          # NOTE Inspect and return ModelState key in case of 400
-          result 500, response.body["ExceptionMessage"] || response.body["message"] || response.body["Message"]
-        else
-          result 200, "Shipment update transmitted in ShipStation: #{order["orderId"]}"
-        end
+      if response.code != 200
+        # NOTE Inspect and return ModelState key in case of 400
+        result 500, response.body["ExceptionMessage"] || response.body["message"] || response.body["Message"]
       else
-        result 200, "Order #{ @shipment[:id] } not found in ShipStation."
+        result 200, "Shipment update transmitted in ShipStation: #{order["orderId"]}"
       end
-    rescue => e
-      # tell Honeybadger
-      log_exception(e)
-
-      # tell the hub about the unsuccessful get attempt
-      result 500, "Unable to update shipment in ShipStation. Error: #{e.message}"
+    else
+      result 200, "Order #{ @shipment[:id] } not found in ShipStation."
     end
   end
 
   post '/get_shipments' do
+    # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
+    # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
+    # for this the timestamp we use for "since" should be adjusted accordingly.
+    since_time = (Time.parse(@config[:since]) + Time.zone_offset("PDT")).utc
 
-    begin
+    since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
 
-      # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
-      # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
-      # for this the timestamp we use for "since" should be adjusted accordingly.
-      since_time = (Time.parse(@config[:since]) + Time.zone_offset("PDT")).utc
+    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
+    response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=#{since_date}", headers
 
-      since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
-
-      headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
-      response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=#{since_date}", headers
-
-      if error = response.body["ExceptionMessage"]
-        raise error
-      end
-
-      @kount = 0
-
-      response.body["shipments"].each do |shipment|
-        # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
-        # shipments down further using the timestamp provided
-        next unless Time.parse(shipment["createDate"] + "Z") > since_time
-
-        @kount += 1
-        shipTo = shipment["shipTo"]
-
-        add_object :shipment, {
-          id: shipment["orderId"],
-          tracking: shipment["trackingNumber"],
-          shipstation_id: shipment["shipmentId"],
-          status: "shipped",
-          shipping_address: {
-            firstname: shipTo["name"].split(" ").first,
-            lastname:  shipTo["name"].split(" ").last,
-            address1:  shipTo["street1"],
-            address2:  shipTo["street2"],
-            zipcode:   shipTo["postalCode"],
-            city:      shipTo["city"],
-            state:     shipTo["state"],
-            country:   shipTo["country"],
-            phone:     shipTo["phone"]
-          }
-        }
-
-        @new_since = Time.parse(shipment["createDate"] + "PDT") + 1.second
-      end
-
-      # # Tell Wombat to use the current time as the 'high watermark' the next time it checks
-      add_parameter 'since', @new_since || Time.now
-    rescue => e
-      # tell Honeybadger
-      log_exception(e)
-
-      # tell the hub about the unsuccessful get attempt
-      result 500, "Unable to get shipments from ShipStation. Error: #{e.message}"
+    if error = response.body["ExceptionMessage"]
+      raise error
     end
+
+    @kount = 0
+
+    response.body["shipments"].each do |shipment|
+      # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
+      # shipments down further using the timestamp provided
+      next unless Time.parse(shipment["createDate"] + "Z") > since_time
+
+      @kount += 1
+      shipTo = shipment["shipTo"]
+
+      add_object :shipment, {
+        id: shipment["orderId"],
+        tracking: shipment["trackingNumber"],
+        shipstation_id: shipment["shipmentId"],
+        status: "shipped",
+        shipping_address: {
+          firstname: shipTo["name"].split(" ").first,
+          lastname:  shipTo["name"].split(" ").last,
+          address1:  shipTo["street1"],
+          address2:  shipTo["street2"],
+          zipcode:   shipTo["postalCode"],
+          city:      shipTo["city"],
+          state:     shipTo["state"],
+          country:   shipTo["country"],
+          phone:     shipTo["phone"]
+        }
+      }
+
+      @new_since = Time.parse(shipment["createDate"] + "PDT") + 1.second
+    end
+
+    # # Tell Wombat to use the current time as the 'high watermark' the next time it checks
+    add_parameter 'since', @new_since || Time.now
 
     set_summary "Retrieved #{@kount} shipments from ShipStation" if @kount > 0
     result 200
