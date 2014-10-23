@@ -5,14 +5,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   set :public_folder, 'public'
   set :logging, true
 
-  STATUS_ON_HOLD           = 5
-  STATUS_CANCELLED         = 4
-  STATUS_AWAITING_SHIPMENT = 2
-
   Honeybadger.configure do |config|
     config.api_key = ENV['HONEYBADGER_KEY']
     config.environment_name = ENV['RACK_ENV']
   end
+
+  # REST API doc https://www.mashape.com/shipstation/shipstation
 
   post '/add_shipment' do
     # Shipstation wants orders and then it creates shipments. This integration assumes the
@@ -20,15 +18,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # storefront concept of a shipment.
 
     order = populate_order(@payload[:shipment])
-
-    headers = {
-      "Authorization" => "Basic #{@config[:authorization]}",
-      "X-Mashape-Key" => @config[:mashape_key],
-      "content-type" => "application/json"
-    }
-
     response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
-                            headers: headers,
+                            headers: headers.merge("content-type" => "application/json"),
                             parameters: order.to_json
 
     raise response.body["Message"] if response.code == 400
@@ -36,8 +27,6 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       raise error
     end
 
-    # return a partial order object with the shipstation id
-    # add_object :order, {id: @order[:id], shipstation_id: @shipstation_id}
     result 200, "Shipment transmitted to ShipStation: #{response.body["orderId"]}"
   end
 
@@ -65,8 +54,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       return result 200, "Can't update Order when status is #{ @shipment[:status] }"
     end
 
-    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
-    response = Unirest.get "https://shipstation.p.mashape.com/Orders/List?orderNumber=#{@shipment[:id]}", headers
+    response = Unirest.get "https://shipstation.p.mashape.com/Orders/List?orderNumber=#{@shipment[:id]}",
+                           headers: headers
 
     orders = response.body["orders"]
     if orders && order = orders.first
@@ -74,13 +63,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       populated_order = populate_order(@payload[:shipment])
       populated_order.merge! "orderKey" => order["orderKey"]
 
-      headers = {
-        "Authorization" => "Basic #{@config[:authorization]}",
-        "X-Mashape-Key" => @config[:mashape_key],
-        "content-type" => "application/json"
-      }
       response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
-                              headers: headers,
+                              headers: headers.merge("content-type" => "application/json"),
                               parameters: populated_order.to_json
 
       if response.code != 200
@@ -99,11 +83,11 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
     # for this the timestamp we use for "since" should be adjusted accordingly.
     since_time = (Time.parse(@config[:since]) + Time.zone_offset("PDT")).utc
-
     since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
 
-    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key] } }
-    response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=#{since_date}", headers
+    query_string = "page=1&pageSize=500&shipdatestart=#{since_date}"
+    response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?#{query_string}",
+                           headers: headers
 
     if error = response.body["ExceptionMessage"]
       raise error
@@ -242,5 +226,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     else
       'awaiting_shipment'
     end
+  end
+
+  def headers
+    {
+      "Authorization" => "Basic #{@config[:authorization]}",
+      "X-Mashape-Key" => @config[:mashape_key]
+    }
   end
 end
