@@ -34,7 +34,7 @@ describe ShipStationApp do
     end
 
     it "doesnt set summary if no shipments found" do
-      response = double("Response", body: { "shipments" => [] }).as_null_object
+      response = double("Response", code: 200, body: { "shipments" => [] }).as_null_object
       expect(Unirest).to receive(:get).and_return response
 
       post '/get_shipments', request.to_json, {}

@@ -1,6 +1,19 @@
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/numeric/time'
 
+class ShipstationClient
+  class ResponseError < StandardError; end
+
+  class << self
+    def request(method, path, options)
+      response = Unirest.send method, "https://shipstation.p.mashape.com/#{path}", options
+      return response if response.code == 200
+
+      raise ResponseError, "#{response.code}, API error: #{response.body.inspect}"
+    end
+  end
+end
+
 class ShipStationApp < EndpointBase::Sinatra::Base
   set :public_folder, 'public'
   set :logging, true
@@ -8,6 +21,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   Honeybadger.configure do |config|
     config.api_key = ENV['HONEYBADGER_KEY']
     config.environment_name = ENV['RACK_ENV']
+  end
+
+  error ShipstationClient::ResponseError do
+    result 500, env['sinatra.error'].message
   end
 
   # REST API doc https://www.mashape.com/shipstation/shipstation
@@ -18,15 +35,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # storefront concept of a shipment.
 
     order = populate_order(@payload[:shipment])
-    response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
-                            headers: headers.merge("content-type" => "application/json"),
-                            parameters: order.to_json
+    options = {
+      headers: headers.merge("content-type" => "application/json"),
+      parameters: order.to_json
+    }
 
-    raise response.body["Message"] if response.code == 400
-    if error = response.body["ExceptionMessage"]
-      raise error
-    end
-
+    response = ShipstationClient.request :post, "Orders/CreateOrder", options
     result 200, "Shipment transmitted to ShipStation: #{response.body["orderId"]}"
   end
 
@@ -54,8 +68,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       return result 200, "Can't update Order when status is #{ @shipment[:status] }"
     end
 
-    response = Unirest.get "https://shipstation.p.mashape.com/Orders/List?orderNumber=#{@shipment[:id]}",
-                           headers: headers
+    response = ShipstationClient.request :get, "Orders/List?orderNumber=#{@shipment[:id]}", headers: headers
 
     orders = response.body["orders"]
     if orders && order = orders.first
@@ -63,16 +76,13 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       populated_order = populate_order(@payload[:shipment])
       populated_order.merge! "orderKey" => order["orderKey"]
 
-      response = Unirest.post "https://shipstation.p.mashape.com/Orders/CreateOrder",
-                              headers: headers.merge("content-type" => "application/json"),
-                              parameters: populated_order.to_json
+      options = {
+        headers: headers.merge("content-type" => "application/json"),
+        parameters: populated_order.to_json
+      }
 
-      if response.code != 200
-        # NOTE Inspect and return ModelState key in case of 400
-        result 500, response.body["ExceptionMessage"] || response.body["message"] || response.body["Message"]
-      else
-        result 200, "Shipment update transmitted in ShipStation: #{order["orderId"]}"
-      end
+      response = ShipstationClient.request :post, "Orders/CreateOrder", options
+      result 200, "Shipment update transmitted in ShipStation: #{order["orderId"]}"
     else
       result 200, "Order #{ @shipment[:id] } not found in ShipStation."
     end
@@ -86,12 +96,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
 
     query_string = "page=1&pageSize=500&shipdatestart=#{since_date}"
-    response = Unirest.get "https://shipstation.p.mashape.com/Shipments/List?#{query_string}",
-                           headers: headers
-
-    if error = response.body["ExceptionMessage"]
-      raise error
-    end
+    response = ShipstationClient.request :get, "Shipments/List?#{query_string}", headers: headers
 
     @kount = 0
 
@@ -134,10 +139,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   private
 
   def map_carrier(carrier_name)
-    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}}
-    response = Unirest.get "https://shipstation.p.mashape.com/Carriers", headers
-
-    raise "Unable to retrieve carrier code for #{carrier_name}" unless response.code == 200
+    response = ShipstationClient.request :get, "Carriers", headers: headers
 
     response.body.each do |carrier|
       return carrier["code"] if carrier["name"] == carrier_name
@@ -147,10 +149,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def map_service(carrier_code, service_name)
-    headers = { headers: {"Authorization" => "Basic #{@config[:authorization]}", "X-Mashape-Key" => @config[:mashape_key]}}
-    response = Unirest.get "https://shipstation.p.mashape.com/Carriers/ListServices?carrierCode=#{carrier_code}", headers
-
-    raise "Unable to retrieve service codes for #{carrier_code}" unless response.code == 200
+    response = ShipstationClient.request :get, "Carriers/ListServices?carrierCode=#{carrier_code}", headers: headers
 
     response.body.each do |service|
       return service["code"] if service["name"] == service_name
