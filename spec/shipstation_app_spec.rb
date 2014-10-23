@@ -17,17 +17,17 @@ describe ShipStationApp do
     let(:request) do
       {
         request_id: '1234567',
-        parameters: config.merge(since: "2014-09-03T00:38:23Z")
+        parameters: config.merge(since: "2014-10-23T00:38:23Z")
       }
     end
 
     it 'returns shipments' do
-      VCR.use_cassette("get_shipments/1414012357") do
+      VCR.use_cassette("get_shipments/1414086620") do
         post '/get_shipments', request.to_json, {}
       end
 
       expect(json_response["summary"]).to match "Retrieved"
-      expect(json_response["shipments"].count).to be > 1
+      expect(json_response["shipments"].count).to be >= 1
       expect(json_response["shipments"][0]["id"]).to be_present
 
       expect(last_response.status).to eq 200
@@ -78,7 +78,7 @@ describe ShipStationApp do
     end
 
     it 'creates a shipment with a requested_shipping_service' do
-      VCR.use_cassette("add_shipment/1414012131") do
+      VCR.use_cassette("add_shipment/#{id}") do
         request[:shipment][:requested_shipping_service] = "Cucamonga Express"
         post '/add_shipment', request.to_json, {}
       end
@@ -137,8 +137,8 @@ describe ShipStationApp do
 
       VCR.use_cassette("update_shipment/#{id}") do
         post '/update_shipment', request.to_json, {}
-        expect(json_response["summary"]).to match "Shipment update transmitted in ShipStation:"
-        expect(last_response.status).to eq 500
+        expect(json_response["summary"]).to match "not found in ShipStation"
+        expect(last_response.status).to eq 200
       end
     end
 

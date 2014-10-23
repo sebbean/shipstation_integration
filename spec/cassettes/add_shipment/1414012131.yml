@@ -1,0 +1,184 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Carriers
+    body:
+      encoding: utf-8
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip
+      X-Mashape-Key:
+      - SHIPSTATION_MASHAPE_KEY
+      User-Agent:
+      - unirest-ruby/1.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 22 Oct 2014 21:08:49 GMT
+      Expires:
+      - "-1"
+      Pragma:
+      - no-cache
+      Server:
+      - Mashape/5.0.5
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      X-Rate-Limit-Limit:
+      - '40'
+      X-Rate-Limit-Remaining:
+      - '37'
+      X-Rate-Limit-Reset:
+      - '10'
+      Content-Length:
+      - '98'
+      Connection:
+      - keep-alive
+    body:
+      encoding: utf-8
+      string: '[{"name":"UPS","code":"ups","accountNumber":"R96E03","requiresFundedAccount":false,"balance":0.0}]'
+    http_version: 
+  recorded_at: Wed, 22 Oct 2014 21:08:52 GMT
+- request:
+    method: get
+    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Carriers/ListServices?carrierCode=ups
+    body:
+      encoding: utf-8
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip
+      X-Mashape-Key:
+      - SHIPSTATION_MASHAPE_KEY
+      User-Agent:
+      - unirest-ruby/1.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 22 Oct 2014 21:08:50 GMT
+      Expires:
+      - "-1"
+      Pragma:
+      - no-cache
+      Server:
+      - Mashape/5.0.5
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      X-Rate-Limit-Limit:
+      - '40'
+      X-Rate-Limit-Remaining:
+      - '36'
+      X-Rate-Limit-Reset:
+      - '10'
+      Content-Length:
+      - '1669'
+      Connection:
+      - keep-alive
+    body:
+      encoding: utf-8
+      string: '[{"carrierCode":"ups","code":"ups_ground","name":"UPS Ground","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_standard","name":"UPS
+        Standard","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_3_day_select","name":"UPS
+        3 Day Select®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_worldwide_express","name":"UPS
+        Worldwide Express®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_ground","name":"UPS
+        Ground International","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_2nd_day_air","name":"UPS
+        2nd Day Air®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_worldwide_express_plus","name":"UPS
+        Worldwide Express Plus®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_worldwide_expedited","name":"UPS
+        Worldwide Expedited®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_2nd_day_air_am","name":"UPS
+        2nd Day Air AM®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_next_day_air_saver","name":"UPS
+        Next Day Air Saver®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_worldwide_saver","name":"UPS
+        Worldwide Saver®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_next_day_air","name":"UPS
+        Next Day Air®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_next_day_air_early_am","name":"UPS
+        Next Day Air® Early AM®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_next_day_air","name":"UPS
+        Next Day Air International","domestic":false,"international":true}]'
+    http_version: 
+  recorded_at: Wed, 22 Oct 2014 21:08:53 GMT
+- request:
+    method: post
+    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Orders/CreateOrder
+    body:
+      encoding: utf-8
+      string: '{"customerEmail":null,"customerUsername":null,"orderNumber":"1414012131","orderDate":"2014-06-02T15:38:23Z","paymentDate":"2014-06-02T15:38:23Z","orderStatus":"awaiting_shipment","shipTo":{"name":"Bruno
+        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"billTo":{"name":"Bruno
+        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"customerNotes":null,"packageCode":"package","advancedOptions":{"storeId":"SHIPSTATION_STORE_ID","customfield1":null,"customfield2":null,"customfield3":null},"carrierCode":"ups","serviceCode":"ups_ground","items":[{"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"quantity":9,"unitPrice":9}]}'
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip
+      X-Mashape-Key:
+      - SHIPSTATION_MASHAPE_KEY
+      Content-Type:
+      - application/json
+      User-Agent:
+      - unirest-ruby/1.1
+      Content-Length:
+      - '864'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 22 Oct 2014 21:08:51 GMT
+      Expires:
+      - "-1"
+      Pragma:
+      - no-cache
+      Server:
+      - Mashape/5.0.5
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      X-Rate-Limit-Limit:
+      - '40'
+      X-Rate-Limit-Remaining:
+      - '35'
+      X-Rate-Limit-Reset:
+      - '9'
+      Content-Length:
+      - '1860'
+      Connection:
+      - keep-alive
+    body:
+      encoding: utf-8
+      string: '{"orderId":74424494,"orderNumber":"1414012131","orderKey":"1d43244ff97f40abb21670c37fb28373","orderDate":"2014-06-02T08:38:23.0000000","paymentDate":"2014-06-02T08:38:23.0000000","orderStatus":"awaiting_shipment","customerUsername":null,"customerEmail":null,"billTo":{"name":"Bruno
+        Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":null},"shipTo":{"name":"Bruno
+        Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":false},"items":[{"orderItemId":100456328,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"weight":null,"quantity":9,"unitPrice":9.00,"warehouseLocation":null,"options":[],"productId":11209542,"fulfillmentSku":null}],"amountPaid":0.00,"taxAmount":0.00,"shippingAmount":0.00,"customerNotes":null,"internalNotes":null,"gift":false,"giftMessage":null,"paymentMethod":null,"requestedShippingService":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"shipDate":"2014-10-22","weight":{"value":0.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"internationalOptions":{"contents":"merchandise","customsItems":[{"description":"Spree
+        T-Shirt","quantity":9,"value":9.00,"harmonizedTariffCode":null,"countryOfOrigin":"US"}]},"advancedOptions":{"warehouseId":22298,"nonMachinable":false,"saturdayDelivery":false,"containsAlcohol":false,"storeId":SHIPSTATION_STORE_ID,"customField1":null,"customField2":null,"customField3":null,"source":null,"billToParty":null,"billToAccount":null,"billToPostalCode":null,"billToCountryCode":null},"tagIds":null}'
+    http_version: 
+  recorded_at: Wed, 22 Oct 2014 21:08:54 GMT
+recorded_with: VCR 2.9.3

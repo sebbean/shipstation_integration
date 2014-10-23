@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=2014-10-22
+    body:
+      encoding: utf-8
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip
+      X-Mashape-Key:
+      - SHIPSTATION_MASHAPE_KEY
+      User-Agent:
+      - unirest-ruby/1.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Oct 2014 17:50:20 GMT
+      Expires:
+      - "-1"
+      Pragma:
+      - no-cache
+      Server:
+      - Mashape/5.0.5
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      X-Rate-Limit-Limit:
+      - '40'
+      X-Rate-Limit-Remaining:
+      - '39'
+      X-Rate-Limit-Reset:
+      - '40'
+      Content-Length:
+      - '2282'
+      Connection:
+      - keep-alive
+    body:
+      encoding: utf-8
+      string: '{"shipments":[{"shipmentId":46907287,"orderId":74429447,"orderNumber":"H70773801322","createDate":"2014-10-22T14:35:39.9770000","shipDate":"2014-10-22","shipmentCost":8.57,"insuranceCost":0.0,"trackingNumber":"1ZR96E030395082551","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Mike
+        Lee","company":null,"street1":"1234 Awesome Street","street2":null,"street3":null,"city":"Bethesda","state":"MD","postalCode":"20817","country":"US","phone":"7143485393","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":100462847,"lineItemKey":null,"sku":"SPR-00001","name":"Spree
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":1,"unitPrice":19.99,"warehouseLocation":null,"options":null,"productId":null,"fulfillmentSku":null}],"labelData":null,"formData":null},{"shipmentId":46973483,"orderId":74556924,"orderNumber":"CQQ37HW-100-S","createDate":"2014-10-23T09:00:53.3530000","shipDate":"2014-10-23","shipmentCost":8.57,"insuranceCost":0.0,"trackingNumber":"1ZR96E030392482811","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Brad
+        Kohr","company":null,"street1":"4600 EAST WEST HWY","street2":null,"street3":null,"city":"BETHESDA","state":"MD","postalCode":"20814-3415","country":"US","phone":null,"residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":100671350,"lineItemKey":null,"sku":"GRD-GREEN-M-07297AD9","name":"[Sample]
+        GANT, red duffle","imageUrl":null,"weight":null,"quantity":1,"unitPrice":140.00,"warehouseLocation":null,"options":null,"productId":null,"fulfillmentSku":null}],"labelData":null,"formData":null}],"total":2,"page":1,"pages":0}'
+    http_version: 
+  recorded_at: Thu, 23 Oct 2014 17:50:21 GMT
+recorded_with: VCR 2.9.3
