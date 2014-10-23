@@ -1,3 +1,6 @@
+require 'active_support/core_ext/date/calculations'
+require 'active_support/core_ext/numeric/time'
+
 class ShipStationApp < EndpointBase::Sinatra::Base
   set :public_folder, 'public'
   set :logging, true
