@@ -13,6 +13,13 @@ describe ShipStationApp do
     }
   end
 
+  it "roots fine" do
+    get "/" do
+      expect(last_response.body).to match /ok/i
+      expect(last_response.status).to eq 200
+    end
+  end
+
   describe 'POST /get_shipments' do
     let(:request) do
       {

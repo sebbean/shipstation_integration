@@ -36,7 +36,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
     order = populate_order(@payload[:shipment])
     options = {
-      headers: headers.merge("content-type" => "application/json"),
+      headers: ship_headers.merge("content-type" => "application/json"),
       parameters: order.to_json
     }
 
@@ -68,7 +68,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       return result 200, "Can't update Order when status is #{ @shipment[:status] }"
     end
 
-    response = ShipstationClient.request :get, "Orders/List?orderNumber=#{@shipment[:id]}", headers: headers
+    response = ShipstationClient.request :get, "Orders/List?orderNumber=#{@shipment[:id]}", headers: ship_headers
 
     orders = response.body["orders"]
     if orders && order = orders.first
@@ -77,7 +77,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       populated_order.merge! "orderKey" => order["orderKey"]
 
       options = {
-        headers: headers.merge("content-type" => "application/json"),
+        headers: ship_headers.merge("content-type" => "application/json"),
         parameters: populated_order.to_json
       }
 
@@ -96,7 +96,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
 
     query_string = "page=1&pageSize=500&shipdatestart=#{since_date}"
-    response = ShipstationClient.request :get, "Shipments/List?#{query_string}", headers: headers
+    response = ShipstationClient.request :get, "Shipments/List?#{query_string}", headers: ship_headers
 
     @kount = 0
 
@@ -139,7 +139,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   private
 
   def map_carrier(carrier_name)
-    response = ShipstationClient.request :get, "Carriers", headers: headers
+    response = ShipstationClient.request :get, "Carriers", headers: ship_headers
 
     response.body.each do |carrier|
       return carrier["code"] if carrier["name"] == carrier_name
@@ -149,7 +149,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def map_service(carrier_code, service_name)
-    response = ShipstationClient.request :get, "Carriers/ListServices?carrierCode=#{carrier_code}", headers: headers
+    response = ShipstationClient.request :get, "Carriers/ListServices?carrierCode=#{carrier_code}", headers: ship_headers
 
     response.body.each do |service|
       return service["code"] if service["name"] == service_name
@@ -227,7 +227,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     end
   end
 
-  def headers
+  def ship_headers
     {
       "Authorization" => "Basic #{@config[:authorization]}",
       "X-Mashape-Key" => @config[:mashape_key]
