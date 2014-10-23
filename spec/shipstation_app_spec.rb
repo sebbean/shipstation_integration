@@ -131,7 +131,17 @@ describe ShipStationApp do
       expect(last_response.status).to eq 200
     end
 
-    pending "test when shipment not found"
+    it "test when shipment not found" do
+      id = "wasneverthere"
+      request[:shipment][:id] = id
+
+      VCR.use_cassette("update_shipment/#{id}") do
+        post '/update_shipment', request.to_json, {}
+        expect(json_response["summary"]).to match "Shipment update transmitted in ShipStation:"
+        expect(last_response.status).to eq 500
+      end
+    end
+
     pending "test GET order request doesn't 200"
     pending "test when POST order request returns 400, 401 and 500"
   end
