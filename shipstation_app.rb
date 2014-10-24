@@ -123,7 +123,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
           state:     shipTo["state"],
           country:   shipTo["country"],
           phone:     shipTo["phone"]
-        }
+        },
+        shipstation: shipment
       }
 
       @new_since = Time.parse(shipment["createDate"] + "PDT") + 1.second
