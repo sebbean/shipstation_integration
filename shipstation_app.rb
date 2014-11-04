@@ -138,13 +138,6 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       end
       @kount = shipstation_result.count
 
-      # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
-      # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
-      # for this the timestamp we use for "now" should be adjusted accordingly.
-      now = (Time.now + Time.zone_offset("PDT")).utc.iso8601
-
-      # Tell Wombat to use the current time as the 'high watermark' the next time it checks
-      add_parameter 'since', now
     rescue => e
       # tell Honeybadger
       log_exception(e)
@@ -153,7 +146,18 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       result 500, "Unable to get shipments from ShipStation. Error: #{e.message}"
     end
 
-    set_summary "Retrieved #{@kount} shipments from ShipStation" if @kount > 0
+    if @kount > 0
+      # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
+      # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
+      # for this the timestamp we use for "now" should be adjusted accordingly.
+      now = (Time.now + Time.zone_offset("PDT")).utc.iso8601
+
+      # Tell Wombat to use the current time as the 'high watermark' the next time it checks
+      add_parameter 'since', now
+
+      set_summary "Retrieved #{@kount} shipments from ShipStation"
+    end
+
     result 200
   end
 
