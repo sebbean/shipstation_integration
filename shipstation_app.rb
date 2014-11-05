@@ -119,21 +119,21 @@ class ShipStationApp < EndpointBase::Sinatra::Base
         lastname = full_name.split(" ").last
 
         add_object :shipment, {
-          id: shipment_number,
-          tracking: resource.TrackingNumber,
-          shipstation_id: resource.ShipmentID.to_s,
-          status: "shipped",
-          shipping_address: {
-            firstname: firstname,
-            lastname:  lastname,
-            address1:  order_resource.ShipStreet1,
-            address2:  order_resource.ShipStreet2,
-            zipcode:   order_resource.ShipPostalCode,
-            city:      order_resource.ShipCity,
-            state:     order_resource.ShipState,
-            country:   order_resource.ShipCountryCode,
-            phone:     order_resource.ShipPhone
-          }
+            id: shipment_number,
+            tracking: resource.TrackingNumber,
+            shipstation_id: resource.ShipmentID.to_s,
+            status: "shipped",
+            shipping_address: {
+                firstname: firstname,
+                lastname:  lastname,
+                address1:  order_resource.ShipStreet1,
+                address2:  order_resource.ShipStreet2,
+                zipcode:   order_resource.ShipPostalCode,
+                city:      order_resource.ShipCity,
+                state:     order_resource.ShipState,
+                country:   order_resource.ShipCountryCode,
+                phone:     order_resource.ShipPhone
+            }
         }
       end
       @kount = shipstation_result.count
@@ -193,13 +193,13 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.OrderNumber    = shipment[:id]
 
     case shipment[:status]
-    when 'hold'
-      resource.OrderStatusID = STATUS_ON_HOLD
-      resource.HoldUntil = shipment[:hold_until]
-    when /cancell?ed/
-      resource.OrderStatusID = STATUS_CANCELLED
-    else
-      resource.OrderStatusID = STATUS_AWAITING_SHIPMENT
+      when 'hold'
+        resource.OrderStatusID = STATUS_ON_HOLD
+        resource.HoldUntil = shipment[:hold_until]
+      when /cancell?ed/
+        resource.OrderStatusID = STATUS_CANCELLED
+      else
+        resource.OrderStatusID = STATUS_AWAITING_SHIPMENT
     end
 
     resource.StoreID         = @config[:shipstation_store_id] unless @config[:shipstation_store_id].blank?
@@ -222,9 +222,14 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.OrderDate       = shipment[:created_at] || Time.now
     resource.PayDate         = shipment[:created_at] || Time.now
     resource.OrderTotal      = shipment[:order_total].to_f.to_s
+    resource.ShippingAmount  = shipment[:shipping_amount].to_f.to_s
     resource.CustomField1    = shipment[:custom_field_1]
     resource.CustomField2    = shipment[:custom_field_2]
     resource.CustomField3    = shipment[:custom_field_3]
+    resource.NotesFromBuyer  = shipment[:notes_from_buyer]
+    resource.NotesToBuyer    = shipment[:notes_to_buyer]
+    resource.InternalNotes   = shipment[:internal_notes]
+    resource.Gift            = shipment[:is_gift]
     resource
   end
 
