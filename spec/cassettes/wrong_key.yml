@@ -1,0 +1,40 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=2014-10-22
+    body:
+      encoding: utf-8
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip
+      X-Mashape-Key:
+      - wrong
+      User-Agent:
+      - unirest-ruby/1.1
+  response:
+    status:
+      code: 403
+      message: Forbidden
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 23 Oct 2014 19:18:27 GMT
+      Server:
+      - Mashape/5.0.5
+      X-Mashape-Proxy-Response:
+      - 'true'
+      Content-Length:
+      - '33'
+      Connection:
+      - keep-alive
+    body:
+      encoding: utf-8
+      string: '{"message":"Invalid Mashape Key"}'
+    http_version: 
+  recorded_at: Thu, 23 Oct 2014 19:18:27 GMT
+recorded_with: VCR 2.9.3
