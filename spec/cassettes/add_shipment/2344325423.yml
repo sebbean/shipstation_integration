@@ -25,7 +25,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 22 Oct 2014 21:08:49 GMT
+      - Thu, 06 Nov 2014 17:36:57 GMT
       Expires:
       - "-1"
       Pragma:
@@ -39,9 +39,9 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '37'
+      - '40'
       X-Rate-Limit-Reset:
-      - '10'
+      - '4'
       Content-Length:
       - '98'
       Connection:
@@ -50,7 +50,7 @@ http_interactions:
       encoding: utf-8
       string: '[{"name":"UPS","code":"ups","accountNumber":"R96E03","requiresFundedAccount":false,"balance":0.0}]'
     http_version: 
-  recorded_at: Wed, 22 Oct 2014 21:08:52 GMT
+  recorded_at: Thu, 06 Nov 2014 17:36:58 GMT
 - request:
     method: get
     uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Carriers/ListServices?carrierCode=ups
@@ -76,7 +76,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 22 Oct 2014 21:08:50 GMT
+      - Thu, 06 Nov 2014 17:36:58 GMT
       Expires:
       - "-1"
       Pragma:
@@ -90,9 +90,9 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '36'
+      - '39'
       X-Rate-Limit-Reset:
-      - '10'
+      - '2'
       Content-Length:
       - '1669'
       Connection:
@@ -114,17 +114,17 @@ http_interactions:
         Next Day Air® Early AM®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_next_day_air","name":"UPS
         Next Day Air International","domestic":false,"international":true}]'
     http_version: 
-  recorded_at: Wed, 22 Oct 2014 21:08:53 GMT
+  recorded_at: Thu, 06 Nov 2014 17:36:59 GMT
 - request:
     method: post
     uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Orders/CreateOrder
     body:
       encoding: utf-8
-      string: '{"customerEmail":null,"customerUsername":null,"orderNumber":"1414012131","orderDate":"2014-06-02T15:38:23Z","paymentDate":"2014-06-02T15:38:23Z","orderStatus":"awaiting_shipment","shipTo":{"name":"Bruno
+      string: '{"customerEmail":null,"customerUsername":null,"orderNumber":"2344325423","orderDate":"2014-06-02T15:38:23Z","paymentDate":"2014-06-02T15:38:23Z","orderStatus":"awaiting_shipment","shipTo":{"name":"Bruno
         Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
         Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"billTo":{"name":"Bruno
         Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"customerNotes":null,"packageCode":"package","advancedOptions":{"storeId":"SHIPSTATION_STORE_ID","customfield1":null,"customfield2":null,"customfield3":null},"carrierCode":"ups","serviceCode":"ups_ground","items":[{"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"shippingAmount":"0.0","customerNotes":null,"internalNotes":null,"gift":null,"packageCode":"package","advancedOptions":{"storeId":"SHIPSTATION_STORE_ID","customfield1":null,"customfield2":null,"customfield3":null},"carrierCode":"ups","serviceCode":"ups_ground","items":[{"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
         T-Shirt","imageUrl":null,"quantity":9,"unitPrice":9}]}'
     headers:
       Accept:
@@ -138,7 +138,7 @@ http_interactions:
       User-Agent:
       - unirest-ruby/1.1
       Content-Length:
-      - '864'
+      - '920'
   response:
     status:
       code: 200
@@ -149,7 +149,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 22 Oct 2014 21:08:51 GMT
+      - Thu, 06 Nov 2014 17:36:59 GMT
       Expires:
       - "-1"
       Pragma:
@@ -163,22 +163,22 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '35'
+      - '38'
       X-Rate-Limit-Reset:
-      - '9'
+      - '1'
       Content-Length:
       - '1860'
       Connection:
       - keep-alive
     body:
       encoding: utf-8
-      string: '{"orderId":74424494,"orderNumber":"1414012131","orderKey":"1d43244ff97f40abb21670c37fb28373","orderDate":"2014-06-02T08:38:23.0000000","paymentDate":"2014-06-02T08:38:23.0000000","orderStatus":"awaiting_shipment","customerUsername":null,"customerEmail":null,"billTo":{"name":"Bruno
+      string: '{"orderId":76695395,"orderNumber":"2344325423","orderKey":"e359f87d2e2c4e8cb7865dbc553a77e9","orderDate":"2014-06-02T08:38:23.0000000","paymentDate":"2014-06-02T08:38:23.0000000","orderStatus":"awaiting_shipment","customerUsername":null,"customerEmail":null,"billTo":{"name":"Bruno
         Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
         Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":null},"shipTo":{"name":"Bruno
         Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":false},"items":[{"orderItemId":100456328,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
-        T-Shirt","imageUrl":null,"weight":null,"quantity":9,"unitPrice":9.00,"warehouseLocation":null,"options":[],"productId":11209542,"fulfillmentSku":null}],"amountPaid":0.00,"taxAmount":0.00,"shippingAmount":0.00,"customerNotes":null,"internalNotes":null,"gift":false,"giftMessage":null,"paymentMethod":null,"requestedShippingService":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"shipDate":"2014-10-22","weight":{"value":0.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"internationalOptions":{"contents":"merchandise","customsItems":[{"description":"Spree
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":false},"items":[{"orderItemId":104034196,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"weight":null,"quantity":9,"unitPrice":9.00,"warehouseLocation":null,"options":[],"productId":11209542,"fulfillmentSku":null}],"amountPaid":0.00,"taxAmount":0.00,"shippingAmount":0.00,"customerNotes":null,"internalNotes":null,"gift":false,"giftMessage":null,"paymentMethod":null,"requestedShippingService":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"shipDate":"2014-11-06","weight":{"value":0.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"internationalOptions":{"contents":"merchandise","customsItems":[{"description":"Spree
         T-Shirt","quantity":9,"value":9.00,"harmonizedTariffCode":null,"countryOfOrigin":"US"}]},"advancedOptions":{"warehouseId":22298,"nonMachinable":false,"saturdayDelivery":false,"containsAlcohol":false,"storeId":SHIPSTATION_STORE_ID,"customField1":null,"customField2":null,"customField3":null,"source":null,"billToParty":null,"billToAccount":null,"billToPostalCode":null,"billToCountryCode":null},"tagIds":null}'
     http_version: 
-  recorded_at: Wed, 22 Oct 2014 21:08:54 GMT
+  recorded_at: Thu, 06 Nov 2014 17:37:00 GMT
 recorded_with: VCR 2.9.3

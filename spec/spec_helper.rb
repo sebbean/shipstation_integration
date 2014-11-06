@@ -23,6 +23,9 @@ VCR.configure do |c|
   c.cassette_library_dir = 'spec/cassettes'
   c.hook_into :webmock
 
+  # hack to avoid data in binary on cassetes
+  # c.force_utf8_encoding = true
+
   c.filter_sensitive_data("SHIPSTATION_AUTHORIZATION") { ENV["SHIPSTATION_AUTHORIZATION"] }
   c.filter_sensitive_data("SHIPSTATION_MASHAPE_KEY") { ENV["SHIPSTATION_MASHAPE_KEY"] }
   c.filter_sensitive_data("SHIPSTATION_STORE_ID") { ENV["SHIPSTATION_STORE_ID"] }
