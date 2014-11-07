@@ -166,7 +166,6 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def populate_order(shipment)
-    carrier_code = map_carrier(shipment[:shipping_carrier]) #
     order = {
       "customerEmail" => shipment[:email],
       "customerUsername" => shipment[:email],
@@ -182,10 +181,13 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "gift" => shipment[:is_gift],
       "packageCode" => 'package',
       "advancedOptions" => populate_advanced(shipment),
-      "carrierCode" => carrier_code,
-      "serviceCode" => map_service(carrier_code, shipment[:shipping_method]), #required if shipping_carrier is present
       "items" => populate_items(shipment[:items])
     }
+
+    if shipment[:shipping_carrier]
+      order["carrierCode"] = map_carrier(shipment[:shipping_carrier]) #optional - you can do the mapping in ShipStation
+      order["serviceCode"] = map_service(carrier_code, shipment[:shipping_method]) #required if shipping_carrier is present
+    end
   end
 
   def populate_advanced(shipment)
