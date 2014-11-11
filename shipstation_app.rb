@@ -193,7 +193,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "storeId" => @config[:shipstation_store_id],
       "customfield1" => shipment[:custom_field_1],
       "customfield2" => shipment[:custom_field_2],
-      "customfield3" => shipment[:custom_field_3]
+      "customfield3" => shipment[:custom_field_3],
+      "containsAlcohol" => shipment[:contains_alcohol],
+      "saturdayDelivery" => shipment[:saturday_delivery],
+      "nonMachinable" => shipment[:non_machinable]
     }
   end
 
