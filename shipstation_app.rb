@@ -92,7 +92,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
     # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
     # for this the timestamp we use for "since" should be adjusted accordingly.
-    since_time = Time.parse(@config[:since]).in_time_zone("Pacific Time (US & Canada)")
+    zone = "Pacific Time (US & Canada)"
+    since_time = Time.parse(@config[:since]).in_time_zone(zone)
     since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
 
     query_string = "page=1&pageSize=500&shipdatestart=#{since_date}"
@@ -103,7 +104,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     response.body["shipments"].each do |shipment|
       # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
       # shipments down further using the timestamp provided
-      next unless Time.parse(shipment["createDate"]) > since_time
+      #
+      # Need to parse value returned from SS as PT
+      next unless ActiveSupport::TimeZone[zone].parse(shipment["createDate"]) > since_time
 
       @kount += 1
       shipTo = shipment["shipTo"]
