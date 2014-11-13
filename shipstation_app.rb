@@ -103,7 +103,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     response.body["shipments"].each do |shipment|
       # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
       # shipments down further using the timestamp provided
-      next unless Time.parse(shipment["createDate"] + "Z") > since_time
+      next unless Time.parse(shipment["createDate"]) > since_time
 
       @kount += 1
       shipTo = shipment["shipTo"]
