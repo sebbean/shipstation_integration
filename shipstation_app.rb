@@ -92,7 +92,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
     # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
     # for this the timestamp we use for "since" should be adjusted accordingly.
-    since_time = (Time.parse(@config[:since]) + Time.zone_offset("PDT")).utc
+    since_time = Time.parse(@config[:since]).in_time_zone("Pacific Time (US & Canada)")
     since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
 
     query_string = "page=1&pageSize=500&shipdatestart=#{since_date}"
@@ -129,13 +129,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     end
 
     if @kount > 0
-      # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
-      # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
-      # for this the timestamp we use for "now" should be adjusted accordingly.
-      now = (Time.now + Time.zone_offset("PDT")).utc.iso8601
-
       # Tell Wombat to use the current time as the 'high watermark' the next time it checks
-      add_parameter 'since', now
+      add_parameter 'since', Time.now.utc.iso8601
 
       set_summary "Retrieved #{@kount} shipments from ShipStation"
     end
