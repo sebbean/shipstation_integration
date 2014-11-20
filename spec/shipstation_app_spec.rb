@@ -86,6 +86,8 @@ describe ShipStationApp do
 
     it 'creates a shipment with a requested_shipping_service' do
       VCR.use_cassette("add_shipment/#{id}") do
+        # request[:shipment][:requested_shipping_service] = "Cucamonga Express"
+
         post '/add_shipment', request.to_json, {}
       end
 

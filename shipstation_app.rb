@@ -184,6 +184,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "serviceCode" => map_service(carrier_code, shipment[:shipping_method]), #required if shipping_carrier is present
       "items" => populate_items(shipment[:items])
     }
+
+    order["requestedShippingService"] = shipment[:requested_shipping_service] if shipment[:requested_shipping_service].present?
+
+    order
   end
 
   def populate_advanced(shipment)
