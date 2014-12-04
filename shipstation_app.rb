@@ -185,6 +185,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "items" => populate_items(shipment[:items])
     }
 
+    if shipment[:amount_paid]
+      order["amountPaid"] = shipment[:amount_paid]
+    end
+
     # order["requestedShippingService"] = shipment[:requested_shipping_service] if shipment[:requested_shipping_service].present?
 
     order
