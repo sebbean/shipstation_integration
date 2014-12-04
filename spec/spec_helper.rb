@@ -15,8 +15,8 @@ ENV['SHIPSTATION_MASHAPE_KEY'] ||= 'key'
 ENV['SHIPSTATION_STORE_ID'] ||= '123'
 
 # some sort of digest key on request url, not sure
-ENV['SHIPSTATION_AUTH'] ||= 'auth'
-ENV['SHIPSTATION_KEY'] ||= 'key'
+# ENV['SHIPSTATION_AUTH'] ||= 'auth'
+# ENV['SHIPSTATION_KEY'] ||= 'key'
 
 VCR.configure do |c|
   c.allow_http_connections_when_no_cassette = false
@@ -30,8 +30,8 @@ VCR.configure do |c|
   c.filter_sensitive_data("SHIPSTATION_MASHAPE_KEY") { ENV["SHIPSTATION_MASHAPE_KEY"] }
   c.filter_sensitive_data("SHIPSTATION_STORE_ID") { ENV["SHIPSTATION_STORE_ID"] }
 
-  c.filter_sensitive_data("SHIPSTATION_AUTH") { ENV["SHIPSTATION_AUTH"] }
-  c.filter_sensitive_data("SHIPSTATION_KEY") { ENV["SHIPSTATION_KEY"] }
+  # c.filter_sensitive_data("SHIPSTATION_AUTH") { ENV["SHIPSTATION_AUTH"] }
+  # c.filter_sensitive_data("SHIPSTATION_KEY") { ENV["SHIPSTATION_KEY"] }
 end
 
 RSpec.configure do |config|

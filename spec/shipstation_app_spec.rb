@@ -24,7 +24,7 @@ describe ShipStationApp do
     let(:request) do
       {
         request_id: '1234567',
-        parameters: config.merge(since: "2014-10-23T00:38:23Z")
+        parameters: config.merge(since: "2014-11-29T00:38:23Z")
       }
     end
 
@@ -51,7 +51,7 @@ describe ShipStationApp do
   end
 
   describe 'POST /add_shipment' do
-    let(:id) { "2344325423" }
+    let(:id) { "4325435345345" }
 
     let(:request) do
       {
@@ -140,7 +140,7 @@ describe ShipStationApp do
     end
 
     it "test when shipment not found" do
-      id = "wasneverthere"
+      id = "3241234242342435432534"
       request[:shipment][:id] = id
 
       VCR.use_cassette("update_shipment/#{id}") do

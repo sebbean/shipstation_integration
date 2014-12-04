@@ -2,9 +2,9 @@
 http_interactions:
 - request:
     method: get
-    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Orders/List?orderNumber=wasneverthere
+    uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Orders/List?orderNumber=3241234242342435432534
     body:
-      encoding: utf-8
+      encoding: US-ASCII
       string: ''
     headers:
       Accept:
@@ -25,7 +25,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 Oct 2014 16:01:20 GMT
+      - Thu, 04 Dec 2014 19:56:06 GMT
       Expires:
       - "-1"
       Pragma:
@@ -41,16 +41,16 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '40'
+      - '39'
       X-Rate-Limit-Reset:
-      - '41'
+      - '54'
       Content-Length:
       - '42'
       Connection:
       - keep-alive
     body:
-      encoding: utf-8
+      encoding: UTF-8
       string: '{"orders":[],"total":0,"page":1,"pages":0}'
     http_version: 
-  recorded_at: Thu, 23 Oct 2014 16:01:20 GMT
+  recorded_at: Thu, 04 Dec 2014 19:56:12 GMT
 recorded_with: VCR 2.9.3

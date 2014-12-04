@@ -2,9 +2,9 @@
 http_interactions:
 - request:
     method: get
-    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=2014-10-22
+    uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Shipments/List?page=1&pageSize=500&shipdatestart=2014-11-28
     body:
-      encoding: utf-8
+      encoding: US-ASCII
       string: ''
     headers:
       Accept:
@@ -25,7 +25,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 Oct 2014 17:50:20 GMT
+      - Thu, 04 Dec 2014 19:04:29 GMT
       Expires:
       - "-1"
       Pragma:
@@ -41,18 +41,23 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '39'
       X-Rate-Limit-Reset:
-      - '40'
+      - '31'
       Content-Length:
-      - '2282'
+      - '6762'
       Connection:
       - keep-alive
     body:
-      encoding: utf-8
-      string: '{"shipments":[{"shipmentId":46907287,"orderId":74429447,"orderNumber":"H70773801322","createDate":"2014-10-22T14:35:39.9770000","shipDate":"2014-10-22","shipmentCost":8.57,"insuranceCost":0.0,"trackingNumber":"1ZR96E030395082551","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Mike
-        Lee","company":null,"street1":"1234 Awesome Street","street2":null,"street3":null,"city":"Bethesda","state":"MD","postalCode":"20817","country":"US","phone":"7143485393","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":100462847,"lineItemKey":null,"sku":"SPR-00001","name":"Spree
-        Baseball Jersey","imageUrl":null,"weight":null,"quantity":1,"unitPrice":19.99,"warehouseLocation":null,"options":null,"productId":null,"fulfillmentSku":null}],"labelData":null,"formData":null},{"shipmentId":46973483,"orderId":74556924,"orderNumber":"CQQ37HW-100-S","createDate":"2014-10-23T09:00:53.3530000","shipDate":"2014-10-23","shipmentCost":8.57,"insuranceCost":0.0,"trackingNumber":"1ZR96E030392482811","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Brad
-        Kohr","company":null,"street1":"4600 EAST WEST HWY","street2":null,"street3":null,"city":"BETHESDA","state":"MD","postalCode":"20814-3415","country":"US","phone":null,"residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":100671350,"lineItemKey":null,"sku":"GRD-GREEN-M-07297AD9","name":"[Sample]
-        GANT, red duffle","imageUrl":null,"weight":null,"quantity":1,"unitPrice":140.00,"warehouseLocation":null,"options":null,"productId":null,"fulfillmentSku":null}],"labelData":null,"formData":null}],"total":2,"page":1,"pages":0}'
+      encoding: UTF-8
+      string: '{"shipments":[{"shipmentId":52272294,"orderId":81687213,"orderNumber":"H78488532586","createDate":"2014-12-02T07:24:01.6770000","shipDate":"2014-12-02","shipmentCost":8.53,"insuranceCost":0.0,"trackingNumber":"1ZR96E030398985197","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Bradley
+        Kohr","company":null,"street1":"2200 COLUMBIA PIKE APT 410","street2":null,"street3":null,"city":"ARLINGTON","state":"VA","postalCode":"22204-4417","country":"US","phone":"0000000000","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":111816956,"lineItemKey":null,"sku":"ROR-00011","name":"Ruby
+        on Rails Tote","imageUrl":null,"weight":null,"quantity":1,"unitPrice":15.99,"warehouseLocation":null,"options":null,"productId":11510886,"fulfillmentSku":null}],"labelData":null,"formData":null},{"shipmentId":52322589,"orderId":81716872,"orderNumber":"H75661686688","createDate":"2014-12-02T09:06:40.5930000","shipDate":"2014-12-02","shipmentCost":8.53,"insuranceCost":0.0,"trackingNumber":"1ZR96E030390415834","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Sameer
+        Gulati","company":null,"street1":"3627 Ordway Street NW","street2":"","street3":null,"city":"Bethesda","state":"MD","postalCode":"20814","country":"US","phone":"4084552962","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":111861865,"lineItemKey":null,"sku":"ROR-00012","name":"ROR-00012","imageUrl":null,"weight":null,"quantity":1,"unitPrice":22.99,"warehouseLocation":null,"options":null,"productId":11507395,"fulfillmentSku":null}],"labelData":null,"formData":null},{"shipmentId":52330370,"orderId":81726883,"orderNumber":"H04873122253","createDate":"2014-12-02T09:22:36.8000000","shipDate":"2014-12-02","shipmentCost":8.53,"insuranceCost":0.0,"trackingNumber":"1ZR96E030398537804","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Sameer
+        Gulati","company":null,"street1":"3627 Ordway Street NW","street2":"","street3":null,"city":"Bethesda","state":"MD","postalCode":"20814","country":"US","phone":"4084552962","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":111877409,"lineItemKey":null,"sku":"ROR-00012","name":"ROR-00012","imageUrl":null,"weight":null,"quantity":1,"unitPrice":22.99,"warehouseLocation":null,"options":null,"productId":11507395,"fulfillmentSku":null}],"labelData":null,"formData":null},{"shipmentId":52356719,"orderId":81742489,"orderNumber":"H26782760484","createDate":"2014-12-02T10:15:11.6900000","shipDate":"2014-12-02","shipmentCost":8.53,"insuranceCost":0.0,"trackingNumber":"1ZR96E030394035443","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Sameer
+        Gulati","company":null,"street1":"3627 Ordway Street NW","street2":"","street3":null,"city":"Bethesda","state":"MD","postalCode":"20814","country":"US","phone":"5623466250","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":111900849,"lineItemKey":null,"sku":"ROR-00012","name":"ROR-00012","imageUrl":null,"weight":null,"quantity":1,"unitPrice":22.99,"warehouseLocation":null,"options":null,"productId":11507395,"fulfillmentSku":null}],"labelData":null,"formData":null},{"shipmentId":52589304,"orderId":81953055,"orderNumber":"H15840738051","createDate":"2014-12-03T07:54:26.9800000","shipDate":"2014-12-03","shipmentCost":8.53,"insuranceCost":0.0,"trackingNumber":"1ZR96E030393599855","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Mike
+        Lee","company":null,"street1":"1234 Awesome Street","street2":null,"street3":null,"city":"Bethesda","state":"MD","postalCode":"20817","country":"US","phone":"9173462353","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":112228141,"lineItemKey":null,"sku":"ROR-00015","name":"Ruby
+        on Rails Ringer T-Shirt","imageUrl":null,"weight":null,"quantity":1,"unitPrice":19.99,"warehouseLocation":null,"options":null,"productId":11520450,"fulfillmentSku":null}],"labelData":null,"formData":null},{"shipmentId":52730967,"orderId":82054675,"orderNumber":"R65ZWZ-102-S","createDate":"2014-12-03T14:16:21.0600000","shipDate":"2014-12-03","shipmentCost":8.53,"insuranceCost":0.0,"trackingNumber":"1ZR96E030391373066","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Sameer
+        Gulati","company":null,"street1":"3627 Ordway Street NW","street2":"","street3":null,"city":"Bethesda","state":"MD","postalCode":"20814","country":"US","phone":"4084552962","residential":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":[{"orderItemId":112374877,"lineItemKey":null,"sku":"APC-00001","name":"[Sample]
+        French Connection, straw bag","imageUrl":null,"weight":null,"quantity":1,"unitPrice":112.00,"warehouseLocation":null,"options":null,"productId":11557399,"fulfillmentSku":null}],"labelData":null,"formData":null}],"total":6,"page":1,"pages":0}'
     http_version: 
-  recorded_at: Thu, 23 Oct 2014 17:50:21 GMT
+  recorded_at: Thu, 04 Dec 2014 19:04:31 GMT
 recorded_with: VCR 2.9.3

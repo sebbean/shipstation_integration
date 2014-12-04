@@ -25,7 +25,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 04 Dec 2014 19:57:44 GMT
+      - Thu, 04 Dec 2014 18:21:57 GMT
       Expires:
       - "-1"
       Pragma:
@@ -41,7 +41,7 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '40'
       X-Rate-Limit-Reset:
-      - '16'
+      - '3'
       Content-Length:
       - '98'
       Connection:
@@ -50,7 +50,7 @@ http_interactions:
       encoding: UTF-8
       string: '[{"name":"UPS","code":"ups","accountNumber":"R96E03","requiresFundedAccount":false,"balance":0.0}]'
     http_version: 
-  recorded_at: Thu, 04 Dec 2014 19:57:47 GMT
+  recorded_at: Thu, 04 Dec 2014 18:21:58 GMT
 - request:
     method: get
     uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Carriers/ListServices?carrierCode=ups
@@ -76,7 +76,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 04 Dec 2014 19:57:51 GMT
+      - Thu, 04 Dec 2014 18:21:58 GMT
       Expires:
       - "-1"
       Pragma:
@@ -92,7 +92,7 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '39'
       X-Rate-Limit-Reset:
-      - '9'
+      - '2'
       Content-Length:
       - '1669'
       Connection:
@@ -139,14 +139,18 @@ http_interactions:
         bmF0aW9uYWwiLCJkb21lc3RpYyI6ZmFsc2UsImludGVybmF0aW9uYWwiOnRy
         dWV9XQ==
     http_version: 
-  recorded_at: Thu, 04 Dec 2014 19:57:54 GMT
+  recorded_at: Thu, 04 Dec 2014 18:21:59 GMT
 - request:
     method: post
     uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Orders/CreateOrder
     body:
       encoding: UTF-8
-      string: '{"customerEmail":null,"customerUsername":null,"orderNumber":null,"orderDate":"2014-12-04
-        16:57:47 -0300","paymentDate":"2014-12-04 16:57:47 -0300","orderStatus":"awaiting_shipment","shipTo":null,"billTo":null,"shippingAmount":"0.0","customerNotes":null,"internalNotes":null,"gift":null,"packageCode":"package","advancedOptions":{"storeId":"SHIPSTATION_STORE_ID","customfield1":null,"customfield2":null,"customfield3":null},"carrierCode":"ups","serviceCode":"ups_standard","items":[]}'
+      string: '{"customerEmail":null,"customerUsername":null,"orderNumber":"4325435345345","orderDate":"2014-06-02T15:38:23Z","paymentDate":"2014-06-02T15:38:23Z","orderStatus":"awaiting_shipment","shipTo":{"name":"Bruno
+        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"billTo":{"name":"Bruno
+        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"shippingAmount":"0.0","customerNotes":null,"internalNotes":null,"gift":null,"packageCode":"package","advancedOptions":{"storeId":"SHIPSTATION_STORE_ID","customfield1":null,"customfield2":null,"customfield3":null},"carrierCode":"ups","serviceCode":"ups_ground","items":[{"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"quantity":9,"unitPrice":9}]}'
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -159,18 +163,18 @@ http_interactions:
       User-Agent:
       - unirest-ruby/1.1
       Content-Length:
-      - '468'
+      - '923'
   response:
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 04 Dec 2014 19:57:57 GMT
+      - Thu, 04 Dec 2014 18:22:01 GMT
       Expires:
       - "-1"
       Pragma:
@@ -186,16 +190,56 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '38'
       X-Rate-Limit-Reset:
-      - '3'
+      - '1'
       Content-Length:
-      - '218'
+      - '1863'
       Connection:
       - keep-alive
     body:
-      encoding: UTF-8
-      string: '{"Message":"The request is invalid.","ModelState":{"apiOrder.orderNumber":["The
-        orderNumber field is required."],"apiOrder.billTo":["The billTo field is required."],"apiOrder.shipTo":["The
-        shipTo field is required."]}}'
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJvcmRlcklkIjo4MjI0ODMyNSwib3JkZXJOdW1iZXIiOiI0MzI1NDM1MzQ1
+        MzQ1Iiwib3JkZXJLZXkiOiIxYWMxNzI4NGQzMDc0MWE5YjZiNzFlYTMyY2M5
+        MzliNiIsIm9yZGVyRGF0ZSI6IjIwMTQtMDYtMDJUMDg6Mzg6MjMuMDAwMDAw
+        MCIsInBheW1lbnREYXRlIjoiMjAxNC0wNi0wMlQwODozODoyMy4wMDAwMDAw
+        Iiwib3JkZXJTdGF0dXMiOiJhd2FpdGluZ19zaGlwbWVudCIsImN1c3RvbWVy
+        VXNlcm5hbWUiOm51bGwsImN1c3RvbWVyRW1haWwiOm51bGwsImJpbGxUbyI6
+        eyJuYW1lIjoiQnJ1bm8gQnVjY29sbyIsImNvbXBhbnkiOm51bGwsInN0cmVl
+        dDEiOiJSdWEgQ2FuYXJpbywgMTgzIiwic3RyZWV0MiI6IiIsInN0cmVldDMi
+        Om51bGwsImNpdHkiOiJTw6NvIFBhdWxvIiwic3RhdGUiOiJTUCIsInBvc3Rh
+        bENvZGUiOiIwMTE1NS0wMzAiLCJjb3VudHJ5IjoiQlIiLCJwaG9uZSI6IjU1
+        MTE5NTUxMTEwOTEiLCJyZXNpZGVudGlhbCI6bnVsbH0sInNoaXBUbyI6eyJu
+        YW1lIjoiQnJ1bm8gQnVjY29sbyIsImNvbXBhbnkiOm51bGwsInN0cmVldDEi
+        OiJSdWEgQ2FuYXJpbywgMTgzIiwic3RyZWV0MiI6IiIsInN0cmVldDMiOm51
+        bGwsImNpdHkiOiJTw6NvIFBhdWxvIiwic3RhdGUiOiJTUCIsInBvc3RhbENv
+        ZGUiOiIwMTE1NS0wMzAiLCJjb3VudHJ5IjoiQlIiLCJwaG9uZSI6IjU1MTE5
+        NTUxMTEwOTEiLCJyZXNpZGVudGlhbCI6ZmFsc2V9LCJpdGVtcyI6W3sib3Jk
+        ZXJJdGVtSWQiOjExMjY1NjMzNywibGluZUl0ZW1LZXkiOm51bGwsInNrdSI6
+        IlNQUkVFLVQtU0hJUlQiLCJuYW1lIjoiU3ByZWUgVC1TaGlydCIsImltYWdl
+        VXJsIjpudWxsLCJ3ZWlnaHQiOm51bGwsInF1YW50aXR5Ijo5LCJ1bml0UHJp
+        Y2UiOjkuMDAsIndhcmVob3VzZUxvY2F0aW9uIjpudWxsLCJvcHRpb25zIjpb
+        XSwicHJvZHVjdElkIjoxMTIwOTU0MiwiZnVsZmlsbG1lbnRTa3UiOm51bGx9
+        XSwiYW1vdW50UGFpZCI6MC4wMCwidGF4QW1vdW50IjowLjAwLCJzaGlwcGlu
+        Z0Ftb3VudCI6MC4wMCwiY3VzdG9tZXJOb3RlcyI6bnVsbCwiaW50ZXJuYWxO
+        b3RlcyI6bnVsbCwiZ2lmdCI6ZmFsc2UsImdpZnRNZXNzYWdlIjpudWxsLCJw
+        YXltZW50TWV0aG9kIjpudWxsLCJyZXF1ZXN0ZWRTaGlwcGluZ1NlcnZpY2Ui
+        Om51bGwsImNhcnJpZXJDb2RlIjoidXBzIiwic2VydmljZUNvZGUiOiJ1cHNf
+        Z3JvdW5kIiwicGFja2FnZUNvZGUiOiJwYWNrYWdlIiwiY29uZmlybWF0aW9u
+        IjpudWxsLCJzaGlwRGF0ZSI6IjIwMTQtMTItMDQiLCJ3ZWlnaHQiOnsidmFs
+        dWUiOjAuMCwidW5pdHMiOiJvdW5jZXMifSwiZGltZW5zaW9ucyI6bnVsbCwi
+        aW5zdXJhbmNlT3B0aW9ucyI6eyJwcm92aWRlciI6bnVsbCwiaW5zdXJlU2hp
+        cG1lbnQiOmZhbHNlLCJpbnN1cmVkVmFsdWUiOjAuMH0sImludGVybmF0aW9u
+        YWxPcHRpb25zIjp7ImNvbnRlbnRzIjoibWVyY2hhbmRpc2UiLCJjdXN0b21z
+        SXRlbXMiOlt7ImRlc2NyaXB0aW9uIjoiU3ByZWUgVC1TaGlydCIsInF1YW50
+        aXR5Ijo5LCJ2YWx1ZSI6OS4wMCwiaGFybW9uaXplZFRhcmlmZkNvZGUiOm51
+        bGwsImNvdW50cnlPZk9yaWdpbiI6IlVTIn1dfSwiYWR2YW5jZWRPcHRpb25z
+        Ijp7IndhcmVob3VzZUlkIjoyMjI5OCwibm9uTWFjaGluYWJsZSI6ZmFsc2Us
+        InNhdHVyZGF5RGVsaXZlcnkiOmZhbHNlLCJjb250YWluc0FsY29ob2wiOmZh
+        bHNlLCJzdG9yZUlkIjpTSElQU1RBVElPTl9TVE9SRV9JRCwiY3VzdG9tRmll
+        bGQxIjpudWxsLCJjdXN0b21GaWVsZDIiOm51bGwsImN1c3RvbUZpZWxkMyI6
+        bnVsbCwic291cmNlIjpudWxsLCJiaWxsVG9QYXJ0eSI6bnVsbCwiYmlsbFRv
+        QWNjb3VudCI6bnVsbCwiYmlsbFRvUG9zdGFsQ29kZSI6bnVsbCwiYmlsbFRv
+        Q291bnRyeUNvZGUiOm51bGx9LCJ0YWdJZHMiOm51bGx9
     http_version: 
-  recorded_at: Thu, 04 Dec 2014 19:58:00 GMT
+  recorded_at: Thu, 04 Dec 2014 18:22:02 GMT
 recorded_with: VCR 2.9.3

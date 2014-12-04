@@ -2,9 +2,9 @@
 http_interactions:
 - request:
     method: get
-    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Orders/List?orderNumber=1414012131
+    uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Orders/List?orderNumber=1414012131
     body:
-      encoding: utf-8
+      encoding: US-ASCII
       string: ''
     headers:
       Accept:
@@ -25,7 +25,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 Oct 2014 01:59:47 GMT
+      - Thu, 04 Dec 2014 19:06:36 GMT
       Expires:
       - "-1"
       Pragma:
@@ -33,64 +33,7 @@ http_interactions:
       Server:
       - Mashape/5.0.5
       Ss-Api-Server:
-      - SS-C-WEB02
-      X-Aspnet-Version:
-      - 4.0.30319
-      X-Powered-By:
-      - ASP.NET
-      X-Rate-Limit-Limit:
-      - '40'
-      X-Rate-Limit-Remaining:
-      - '40'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '1902'
-      Connection:
-      - keep-alive
-    body:
-      encoding: utf-8
-      string: '{"orders":[{"orderId":74424494,"orderNumber":"1414012131","orderKey":"1d43244ff97f40abb21670c37fb28373","orderDate":"2014-06-02T08:38:23.0000000","paymentDate":"2014-06-02T08:38:23.0000000","orderStatus":"awaiting_shipment","customerUsername":null,"customerEmail":null,"billTo":{"name":"Bruno
-        Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":null},"shipTo":{"name":"Bruno
-        Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":false},"items":[{"orderItemId":100456328,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
-        T-Shirt","imageUrl":null,"weight":null,"quantity":9,"unitPrice":9.00,"warehouseLocation":null,"options":[],"productId":11209542,"fulfillmentSku":null}],"amountPaid":0.00,"taxAmount":0.00,"shippingAmount":0.00,"customerNotes":null,"internalNotes":null,"gift":false,"giftMessage":null,"paymentMethod":null,"requestedShippingService":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"shipDate":"2014-10-22","weight":{"value":0.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"internationalOptions":{"contents":"merchandise","customsItems":[{"description":"Spree
-        T-Shirt","quantity":9,"value":9.00,"harmonizedTariffCode":null,"countryOfOrigin":"US"}]},"advancedOptions":{"warehouseId":22298,"nonMachinable":false,"saturdayDelivery":false,"containsAlcohol":false,"storeId":SHIPSTATION_STORE_ID,"customField1":null,"customField2":null,"customField3":null,"source":null,"billToParty":null,"billToAccount":null,"billToPostalCode":null,"billToCountryCode":null},"tagIds":null}],"total":1,"page":1,"pages":0}'
-    http_version: 
-  recorded_at: Thu, 23 Oct 2014 01:59:46 GMT
-- request:
-    method: get
-    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Carriers
-    body:
-      encoding: utf-8
-      string: ''
-    headers:
-      Accept:
-      - "*/*; q=0.5, application/xml"
-      Accept-Encoding:
-      - gzip
-      X-Mashape-Key:
-      - SHIPSTATION_MASHAPE_KEY
-      User-Agent:
-      - unirest-ruby/1.1
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - no-cache
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 23 Oct 2014 01:59:48 GMT
-      Expires:
-      - "-1"
-      Pragma:
-      - no-cache
-      Server:
-      - Mashape/5.0.5
+      - SS-C-WEB03
       X-Aspnet-Version:
       - 4.0.30319
       X-Powered-By:
@@ -100,21 +43,48 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '39'
       X-Rate-Limit-Reset:
-      - '12'
+      - '24'
       Content-Length:
-      - '98'
+      - '7603'
       Connection:
       - keep-alive
     body:
-      encoding: utf-8
-      string: '[{"name":"UPS","code":"ups","accountNumber":"R96E03","requiresFundedAccount":false,"balance":0.0}]'
+      encoding: UTF-8
+      string: '{"orders":[{"orderId":74667917,"orderNumber":"12836670500","orderKey":"f8a2ee85a261451980381485112b5c81","orderDate":"2014-10-23T19:16:51.0000000","paymentDate":"2014-10-23T19:16:51.0000000","orderStatus":"shipped","customerUsername":"spree@example.com","customerEmail":"spree@example.com","billTo":{"name":"Joe
+        Smith","company":null,"street1":"1234 Awesome Street","street2":"","street3":null,"city":"Hollywood","state":"California","postalCode":"90210","country":"US","phone":"0000000000","residential":null},"shipTo":{"name":"Joe
+        Smith","company":null,"street1":"1234 Awesome Street","street2":"","street3":null,"city":"Hollywood","state":"CA","postalCode":"90210","country":"US","phone":"0000000000","residential":false},"items":[{"orderItemId":101935228,"lineItemKey":null,"sku":"ROR-00011","name":"ROR-00011","imageUrl":null,"weight":null,"quantity":2,"unitPrice":16.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935226,"lineItemKey":null,"sku":"RUB-00001","name":"Ruby
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":1,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935224,"lineItemKey":null,"sku":"ROR-00011","name":"Ruby
+        on Rails Tote","imageUrl":null,"weight":null,"quantity":1,"unitPrice":15.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935127,"lineItemKey":null,"sku":"SPR-00015","name":"Spree
+        Ringer T-Shirt","imageUrl":null,"weight":null,"quantity":1,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935128,"lineItemKey":null,"sku":"SPR-00001-Variant","name":"Spree
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":33,"unitPrice":19.00,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935140,"lineItemKey":null,"sku":"SPR-00016","name":"Spree
+        Stein","imageUrl":null,"weight":null,"quantity":16,"unitPrice":16.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935221,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"weight":null,"quantity":2,"unitPrice":100.00,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935222,"lineItemKey":null,"sku":"SPR-00014","name":"Spree
+        Mug","imageUrl":null,"weight":null,"quantity":1,"unitPrice":13.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935223,"lineItemKey":null,"sku":"ROR-001","name":"Ruby
+        on Rails Baseball Jersey","imageUrl":null,"weight":null,"quantity":1,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935095,"lineItemKey":null,"sku":"SPR-00001-Variant","name":"Spree
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":13,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935097,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":1,"unitPrice":15.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935098,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":2,"unitPrice":14.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935099,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":2,"unitPrice":13.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935102,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":4,"unitPrice":12.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935109,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":1,"unitPrice":16.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935110,"lineItemKey":null,"sku":"SPR-00001","name":"Spree
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":1,"unitPrice":18.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935112,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":5,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935113,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":2,"unitPrice":20.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935117,"lineItemKey":null,"sku":"SPR-00001","name":"Spree
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":3,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935119,"lineItemKey":null,"sku":"APC-00001","name":"Apache
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":3,"unitPrice":18.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":101935125,"lineItemKey":null,"sku":"ROR-00013","name":"Ruby
+        on Rails Jr. Spaghetti","imageUrl":null,"weight":null,"quantity":55,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null},{"orderItemId":100840569,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"weight":null,"quantity":4,"unitPrice":30.00,"warehouseLocation":null,"options":[],"productId":11209542,"fulfillmentSku":null},{"orderItemId":101935089,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"weight":null,"quantity":65,"unitPrice":9.00,"warehouseLocation":null,"options":[],"productId":11209542,"fulfillmentSku":null},{"orderItemId":101935090,"lineItemKey":null,"sku":"thursday
+        product","name":"thursday product","imageUrl":null,"weight":null,"quantity":3,"unitPrice":15.00,"warehouseLocation":null,"options":[],"productId":11231934,"fulfillmentSku":null},{"orderItemId":101935092,"lineItemKey":null,"sku":"SPR-00012","name":"Spree
+        Bag","imageUrl":null,"weight":null,"quantity":5,"unitPrice":22.99,"warehouseLocation":null,"options":[],"productId":10919670,"fulfillmentSku":null},{"orderItemId":101935094,"lineItemKey":null,"sku":"SPR-00002-Variant","name":"Spree
+        Baseball Jersey","imageUrl":null,"weight":null,"quantity":3,"unitPrice":19.99,"warehouseLocation":null,"options":[],"productId":null,"fulfillmentSku":null}],"amountPaid":0.00,"taxAmount":0.00,"shippingAmount":0.00,"customerNotes":null,"internalNotes":null,"gift":false,"giftMessage":null,"paymentMethod":null,"requestedShippingService":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"shipDate":"2014-10-28","weight":{"value":0.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"internationalOptions":{"contents":null,"customsItems":null},"advancedOptions":{"warehouseId":22298,"nonMachinable":false,"saturdayDelivery":false,"containsAlcohol":false,"storeId":30975,"customField1":null,"customField2":null,"customField3":null,"source":null,"billToParty":null,"billToAccount":null,"billToPostalCode":null,"billToCountryCode":null},"tagIds":null}],"total":1,"page":1,"pages":0}'
     http_version: 
-  recorded_at: Thu, 23 Oct 2014 01:59:47 GMT
+  recorded_at: Thu, 04 Dec 2014 19:06:38 GMT
 - request:
     method: get
-    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Carriers/ListServices?carrierCode=ups
+    uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Carriers
     body:
-      encoding: utf-8
+      encoding: US-ASCII
       string: ''
     headers:
       Accept:
@@ -135,7 +105,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 Oct 2014 01:59:49 GMT
+      - Thu, 04 Dec 2014 19:06:37 GMT
       Expires:
       - "-1"
       Pragma:
@@ -151,40 +121,22 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '38'
       X-Rate-Limit-Reset:
-      - '12'
+      - '23'
       Content-Length:
-      - '1669'
+      - '98'
       Connection:
       - keep-alive
     body:
-      encoding: utf-8
-      string: '[{"carrierCode":"ups","code":"ups_ground","name":"UPS Ground","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_standard","name":"UPS
-        Standard","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_3_day_select","name":"UPS
-        3 Day Select®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_worldwide_express","name":"UPS
-        Worldwide Express®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_ground","name":"UPS
-        Ground International","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_2nd_day_air","name":"UPS
-        2nd Day Air®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_worldwide_express_plus","name":"UPS
-        Worldwide Express Plus®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_worldwide_expedited","name":"UPS
-        Worldwide Expedited®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_2nd_day_air_am","name":"UPS
-        2nd Day Air AM®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_next_day_air_saver","name":"UPS
-        Next Day Air Saver®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_worldwide_saver","name":"UPS
-        Worldwide Saver®","domestic":false,"international":true},{"carrierCode":"ups","code":"ups_next_day_air","name":"UPS
-        Next Day Air®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_next_day_air_early_am","name":"UPS
-        Next Day Air® Early AM®","domestic":true,"international":false},{"carrierCode":"ups","code":"ups_next_day_air","name":"UPS
-        Next Day Air International","domestic":false,"international":true}]'
+      encoding: UTF-8
+      string: '[{"name":"UPS","code":"ups","accountNumber":"R96E03","requiresFundedAccount":false,"balance":0.0}]'
     http_version: 
-  recorded_at: Thu, 23 Oct 2014 01:59:48 GMT
+  recorded_at: Thu, 04 Dec 2014 19:06:39 GMT
 - request:
-    method: post
-    uri: https://SHIPSTATION_AUTH:SHIPSTATION_KEY@shipstation.p.mashape.com/Orders/CreateOrder
+    method: get
+    uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Carriers/ListServices?carrierCode=ups
     body:
-      encoding: utf-8
-      string: '{"customerEmail":null,"customerUsername":null,"orderNumber":"1414012131","orderDate":"2014-06-02T15:38:23Z","paymentDate":"2014-06-02T15:38:23Z","orderStatus":"awaiting_shipment","shipTo":{"name":"Brunow
-        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"billTo":{"name":"Brunow
-        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"customerNotes":null,"packageCode":"package","advancedOptions":{"storeId":"SHIPSTATION_STORE_ID","customfield1":null,"customfield2":null,"customfield3":null},"carrierCode":"ups","serviceCode":"ups_standard","items":[{"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
-        T-Shirt","imageUrl":null,"quantity":10,"unitPrice":9}],"orderKey":"1d43244ff97f40abb21670c37fb28373"}'
+      encoding: US-ASCII
+      string: ''
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -192,12 +144,8 @@ http_interactions:
       - gzip
       X-Mashape-Key:
       - SHIPSTATION_MASHAPE_KEY
-      Content-Type:
-      - application/json
       User-Agent:
       - unirest-ruby/1.1
-      Content-Length:
-      - '915'
   response:
     status:
       code: 200
@@ -208,7 +156,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 Oct 2014 01:59:50 GMT
+      - Thu, 04 Dec 2014 19:06:38 GMT
       Expires:
       - "-1"
       Pragma:
@@ -224,20 +172,154 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '37'
       X-Rate-Limit-Reset:
-      - '11'
+      - '22'
       Content-Length:
-      - '1862'
+      - '1669'
       Connection:
       - keep-alive
     body:
-      encoding: utf-8
-      string: '{"orderId":74424494,"orderNumber":"1414012131","orderKey":"1d43244ff97f40abb21670c37fb28373","orderDate":"2014-06-02T08:38:23.0000000","paymentDate":"2014-06-02T08:38:23.0000000","orderStatus":"awaiting_shipment","customerUsername":null,"customerEmail":null,"billTo":{"name":"Bruno
-        Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":null},"shipTo":{"name":"Brunow
-        Buccolo","company":null,"street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
-        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091","residential":false},"items":[{"orderItemId":100456328,"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
-        T-Shirt","imageUrl":null,"weight":null,"quantity":10,"unitPrice":9.00,"warehouseLocation":null,"options":[],"productId":11209542,"fulfillmentSku":null}],"amountPaid":0.00,"taxAmount":0.00,"shippingAmount":0.00,"customerNotes":null,"internalNotes":null,"gift":false,"giftMessage":null,"paymentMethod":null,"requestedShippingService":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"shipDate":"2014-10-22","weight":{"value":0.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"internationalOptions":{"contents":"merchandise","customsItems":[{"description":"Spree
-        T-Shirt","quantity":9,"value":9.00,"harmonizedTariffCode":null,"countryOfOrigin":"US"}]},"advancedOptions":{"warehouseId":22298,"nonMachinable":false,"saturdayDelivery":false,"containsAlcohol":false,"storeId":SHIPSTATION_STORE_ID,"customField1":null,"customField2":null,"customField3":null,"source":null,"billToParty":null,"billToAccount":null,"billToPostalCode":null,"billToCountryCode":null},"tagIds":null}'
+      encoding: ASCII-8BIT
+      string: !binary |-
+        W3siY2FycmllckNvZGUiOiJ1cHMiLCJjb2RlIjoidXBzX2dyb3VuZCIsIm5h
+        bWUiOiJVUFMgR3JvdW5kIiwiZG9tZXN0aWMiOnRydWUsImludGVybmF0aW9u
+        YWwiOmZhbHNlfSx7ImNhcnJpZXJDb2RlIjoidXBzIiwiY29kZSI6InVwc19z
+        dGFuZGFyZCIsIm5hbWUiOiJVUFMgU3RhbmRhcmQiLCJkb21lc3RpYyI6ZmFs
+        c2UsImludGVybmF0aW9uYWwiOnRydWV9LHsiY2FycmllckNvZGUiOiJ1cHMi
+        LCJjb2RlIjoidXBzXzNfZGF5X3NlbGVjdCIsIm5hbWUiOiJVUFMgMyBEYXkg
+        U2VsZWN0wq4iLCJkb21lc3RpYyI6dHJ1ZSwiaW50ZXJuYXRpb25hbCI6ZmFs
+        c2V9LHsiY2FycmllckNvZGUiOiJ1cHMiLCJjb2RlIjoidXBzX3dvcmxkd2lk
+        ZV9leHByZXNzIiwibmFtZSI6IlVQUyBXb3JsZHdpZGUgRXhwcmVzc8KuIiwi
+        ZG9tZXN0aWMiOmZhbHNlLCJpbnRlcm5hdGlvbmFsIjp0cnVlfSx7ImNhcnJp
+        ZXJDb2RlIjoidXBzIiwiY29kZSI6InVwc19ncm91bmQiLCJuYW1lIjoiVVBT
+        IEdyb3VuZCBJbnRlcm5hdGlvbmFsIiwiZG9tZXN0aWMiOmZhbHNlLCJpbnRl
+        cm5hdGlvbmFsIjp0cnVlfSx7ImNhcnJpZXJDb2RlIjoidXBzIiwiY29kZSI6
+        InVwc18ybmRfZGF5X2FpciIsIm5hbWUiOiJVUFMgMm5kIERheSBBaXLCriIs
+        ImRvbWVzdGljIjp0cnVlLCJpbnRlcm5hdGlvbmFsIjpmYWxzZX0seyJjYXJy
+        aWVyQ29kZSI6InVwcyIsImNvZGUiOiJ1cHNfd29ybGR3aWRlX2V4cHJlc3Nf
+        cGx1cyIsIm5hbWUiOiJVUFMgV29ybGR3aWRlIEV4cHJlc3MgUGx1c8KuIiwi
+        ZG9tZXN0aWMiOmZhbHNlLCJpbnRlcm5hdGlvbmFsIjp0cnVlfSx7ImNhcnJp
+        ZXJDb2RlIjoidXBzIiwiY29kZSI6InVwc193b3JsZHdpZGVfZXhwZWRpdGVk
+        IiwibmFtZSI6IlVQUyBXb3JsZHdpZGUgRXhwZWRpdGVkwq4iLCJkb21lc3Rp
+        YyI6ZmFsc2UsImludGVybmF0aW9uYWwiOnRydWV9LHsiY2FycmllckNvZGUi
+        OiJ1cHMiLCJjb2RlIjoidXBzXzJuZF9kYXlfYWlyX2FtIiwibmFtZSI6IlVQ
+        UyAybmQgRGF5IEFpciBBTcKuIiwiZG9tZXN0aWMiOnRydWUsImludGVybmF0
+        aW9uYWwiOmZhbHNlfSx7ImNhcnJpZXJDb2RlIjoidXBzIiwiY29kZSI6InVw
+        c19uZXh0X2RheV9haXJfc2F2ZXIiLCJuYW1lIjoiVVBTIE5leHQgRGF5IEFp
+        ciBTYXZlcsKuIiwiZG9tZXN0aWMiOnRydWUsImludGVybmF0aW9uYWwiOmZh
+        bHNlfSx7ImNhcnJpZXJDb2RlIjoidXBzIiwiY29kZSI6InVwc193b3JsZHdp
+        ZGVfc2F2ZXIiLCJuYW1lIjoiVVBTIFdvcmxkd2lkZSBTYXZlcsKuIiwiZG9t
+        ZXN0aWMiOmZhbHNlLCJpbnRlcm5hdGlvbmFsIjp0cnVlfSx7ImNhcnJpZXJD
+        b2RlIjoidXBzIiwiY29kZSI6InVwc19uZXh0X2RheV9haXIiLCJuYW1lIjoi
+        VVBTIE5leHQgRGF5IEFpcsKuIiwiZG9tZXN0aWMiOnRydWUsImludGVybmF0
+        aW9uYWwiOmZhbHNlfSx7ImNhcnJpZXJDb2RlIjoidXBzIiwiY29kZSI6InVw
+        c19uZXh0X2RheV9haXJfZWFybHlfYW0iLCJuYW1lIjoiVVBTIE5leHQgRGF5
+        IEFpcsKuIEVhcmx5IEFNwq4iLCJkb21lc3RpYyI6dHJ1ZSwiaW50ZXJuYXRp
+        b25hbCI6ZmFsc2V9LHsiY2FycmllckNvZGUiOiJ1cHMiLCJjb2RlIjoidXBz
+        X25leHRfZGF5X2FpciIsIm5hbWUiOiJVUFMgTmV4dCBEYXkgQWlyIEludGVy
+        bmF0aW9uYWwiLCJkb21lc3RpYyI6ZmFsc2UsImludGVybmF0aW9uYWwiOnRy
+        dWV9XQ==
     http_version: 
-  recorded_at: Thu, 23 Oct 2014 01:59:49 GMT
+  recorded_at: Thu, 04 Dec 2014 19:06:39 GMT
+- request:
+    method: post
+    uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@shipstation.p.mashape.com/Orders/CreateOrder
+    body:
+      encoding: UTF-8
+      string: '{"customerEmail":null,"customerUsername":null,"orderNumber":"1414012131","orderDate":"2014-06-02T15:38:23Z","paymentDate":"2014-06-02T15:38:23Z","orderStatus":"awaiting_shipment","shipTo":{"name":"Brunow
+        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"billTo":{"name":"Brunow
+        Buccolo","street1":"Rua Canario, 183","street2":"","street3":null,"city":"São
+        Paulo","state":"SP","postalCode":"01155-030","country":"BR","phone":"5511955111091"},"shippingAmount":"0.0","customerNotes":null,"internalNotes":null,"gift":null,"packageCode":"package","advancedOptions":{"storeId":"SHIPSTATION_STORE_ID","customfield1":null,"customfield2":null,"customfield3":null},"carrierCode":"ups","serviceCode":"ups_standard","items":[{"lineItemKey":null,"sku":"SPREE-T-SHIRT","name":"Spree
+        T-Shirt","imageUrl":null,"quantity":10,"unitPrice":9}],"orderKey":"f8a2ee85a261451980381485112b5c81"}'
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip
+      X-Mashape-Key:
+      - SHIPSTATION_MASHAPE_KEY
+      Content-Type:
+      - application/json
+      User-Agent:
+      - unirest-ruby/1.1
+      Content-Length:
+      - '971'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 04 Dec 2014 19:06:39 GMT
+      Expires:
+      - "-1"
+      Pragma:
+      - no-cache
+      Server:
+      - Mashape/5.0.5
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      X-Rate-Limit-Limit:
+      - '40'
+      X-Rate-Limit-Remaining:
+      - '36'
+      X-Rate-Limit-Reset:
+      - '21'
+      Content-Length:
+      - '1866'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJvcmRlcklkIjo4MjI2MjkyNSwib3JkZXJOdW1iZXIiOiIxNDE0MDEyMTMx
+        Iiwib3JkZXJLZXkiOiJmOGEyZWU4NWEyNjE0NTE5ODAzODE0ODUxMTJiNWM4
+        MSIsIm9yZGVyRGF0ZSI6IjIwMTQtMDYtMDJUMDg6Mzg6MjMuMDAwMDAwMCIs
+        InBheW1lbnREYXRlIjoiMjAxNC0wNi0wMlQwODozODoyMy4wMDAwMDAwIiwi
+        b3JkZXJTdGF0dXMiOiJhd2FpdGluZ19zaGlwbWVudCIsImN1c3RvbWVyVXNl
+        cm5hbWUiOm51bGwsImN1c3RvbWVyRW1haWwiOm51bGwsImJpbGxUbyI6eyJu
+        YW1lIjoiQnJ1bm93IEJ1Y2NvbG8iLCJjb21wYW55IjpudWxsLCJzdHJlZXQx
+        IjoiUnVhIENhbmFyaW8sIDE4MyIsInN0cmVldDIiOiIiLCJzdHJlZXQzIjpu
+        dWxsLCJjaXR5IjoiU8OjbyBQYXVsbyIsInN0YXRlIjoiU1AiLCJwb3N0YWxD
+        b2RlIjoiMDExNTUtMDMwIiwiY291bnRyeSI6IkJSIiwicGhvbmUiOiI1NTEx
+        OTU1MTExMDkxIiwicmVzaWRlbnRpYWwiOm51bGx9LCJzaGlwVG8iOnsibmFt
+        ZSI6IkJydW5vdyBCdWNjb2xvIiwiY29tcGFueSI6bnVsbCwic3RyZWV0MSI6
+        IlJ1YSBDYW5hcmlvLCAxODMiLCJzdHJlZXQyIjoiIiwic3RyZWV0MyI6bnVs
+        bCwiY2l0eSI6IlPDo28gUGF1bG8iLCJzdGF0ZSI6IlNQIiwicG9zdGFsQ29k
+        ZSI6IjAxMTU1LTAzMCIsImNvdW50cnkiOiJCUiIsInBob25lIjoiNTUxMTk1
+        NTExMTA5MSIsInJlc2lkZW50aWFsIjpmYWxzZX0sIml0ZW1zIjpbeyJvcmRl
+        ckl0ZW1JZCI6MTEyNjc3ODcxLCJsaW5lSXRlbUtleSI6bnVsbCwic2t1Ijoi
+        U1BSRUUtVC1TSElSVCIsIm5hbWUiOiJTcHJlZSBULVNoaXJ0IiwiaW1hZ2VV
+        cmwiOm51bGwsIndlaWdodCI6bnVsbCwicXVhbnRpdHkiOjEwLCJ1bml0UHJp
+        Y2UiOjkuMDAsIndhcmVob3VzZUxvY2F0aW9uIjpudWxsLCJvcHRpb25zIjpb
+        XSwicHJvZHVjdElkIjoxMTIwOTU0MiwiZnVsZmlsbG1lbnRTa3UiOm51bGx9
+        XSwiYW1vdW50UGFpZCI6MC4wMCwidGF4QW1vdW50IjowLjAwLCJzaGlwcGlu
+        Z0Ftb3VudCI6MC4wMCwiY3VzdG9tZXJOb3RlcyI6bnVsbCwiaW50ZXJuYWxO
+        b3RlcyI6bnVsbCwiZ2lmdCI6ZmFsc2UsImdpZnRNZXNzYWdlIjpudWxsLCJw
+        YXltZW50TWV0aG9kIjpudWxsLCJyZXF1ZXN0ZWRTaGlwcGluZ1NlcnZpY2Ui
+        Om51bGwsImNhcnJpZXJDb2RlIjoidXBzIiwic2VydmljZUNvZGUiOiJ1cHNf
+        c3RhbmRhcmQiLCJwYWNrYWdlQ29kZSI6InBhY2thZ2UiLCJjb25maXJtYXRp
+        b24iOm51bGwsInNoaXBEYXRlIjoiMjAxNC0xMi0wNCIsIndlaWdodCI6eyJ2
+        YWx1ZSI6MC4wLCJ1bml0cyI6Im91bmNlcyJ9LCJkaW1lbnNpb25zIjpudWxs
+        LCJpbnN1cmFuY2VPcHRpb25zIjp7InByb3ZpZGVyIjpudWxsLCJpbnN1cmVT
+        aGlwbWVudCI6ZmFsc2UsImluc3VyZWRWYWx1ZSI6MC4wfSwiaW50ZXJuYXRp
+        b25hbE9wdGlvbnMiOnsiY29udGVudHMiOiJtZXJjaGFuZGlzZSIsImN1c3Rv
+        bXNJdGVtcyI6W3siZGVzY3JpcHRpb24iOiJTcHJlZSBULVNoaXJ0IiwicXVh
+        bnRpdHkiOjEwLCJ2YWx1ZSI6OS4wMCwiaGFybW9uaXplZFRhcmlmZkNvZGUi
+        Om51bGwsImNvdW50cnlPZk9yaWdpbiI6IlVTIn1dfSwiYWR2YW5jZWRPcHRp
+        b25zIjp7IndhcmVob3VzZUlkIjoyMjI5OCwibm9uTWFjaGluYWJsZSI6ZmFs
+        c2UsInNhdHVyZGF5RGVsaXZlcnkiOmZhbHNlLCJjb250YWluc0FsY29ob2wi
+        OmZhbHNlLCJzdG9yZUlkIjpTSElQU1RBVElPTl9TVE9SRV9JRCwiY3VzdG9t
+        RmllbGQxIjpudWxsLCJjdXN0b21GaWVsZDIiOm51bGwsImN1c3RvbUZpZWxk
+        MyI6bnVsbCwic291cmNlIjpudWxsLCJiaWxsVG9QYXJ0eSI6bnVsbCwiYmls
+        bFRvQWNjb3VudCI6bnVsbCwiYmlsbFRvUG9zdGFsQ29kZSI6bnVsbCwiYmls
+        bFRvQ291bnRyeUNvZGUiOm51bGx9LCJ0YWdJZHMiOm51bGx9
+    http_version: 
+  recorded_at: Thu, 04 Dec 2014 19:06:41 GMT
 recorded_with: VCR 2.9.3
