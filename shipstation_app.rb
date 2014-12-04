@@ -230,6 +230,11 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     resource.NotesToBuyer    = shipment[:notes_to_buyer]
     resource.InternalNotes   = shipment[:internal_notes]
     resource.Gift            = shipment[:is_gift]
+
+    if shipment[:amount_paid]
+      resource.AmountPaid = shipment[:amount_paid]
+    end
+
     resource
   end
 
