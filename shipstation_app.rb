@@ -191,15 +191,26 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def populate_advanced(shipment)
-    {
+    advanced = {
       "storeId" => @config[:shipstation_store_id],
       "customfield1" => shipment[:custom_field_1],
       "customfield2" => shipment[:custom_field_2],
       "customfield3" => shipment[:custom_field_3],
-      "containsAlcohol" => shipment[:contains_alcohol],
-      "saturdayDelivery" => shipment[:saturday_delivery],
-      "nonMachinable" => shipment[:non_machinable]
     }
+
+    if shipment[:contains_alcohol]
+      advanced["containsAlcohol"] = shipment[:contains_alcohol]
+    end
+
+    if shipment[:saturday_delivery]
+      advanced["saturdayDelivery"] = shipment[:saturday_delivery]
+    end
+
+    if shipment[:non_machinable]
+      advanced["nonMachinable"] = shipment[:non_machinable]
+    end
+
+    advanced
   end
 
   def populate_items(line_items)
