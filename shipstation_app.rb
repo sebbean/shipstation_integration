@@ -160,7 +160,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       return service["code"] if service["name"] == service_name
     end
 
-    raise "There is no service named '#{service_name}' associated wtih the carrier_code of '#{carrier_code}'"
+    raise "There is no service named '#{service_name}' associated with the carrier_code of '#{carrier_code}'"
   end
 
   def populate_order(shipment)
