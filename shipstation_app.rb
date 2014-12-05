@@ -183,7 +183,6 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "orderStatus" => map_status(shipment[:status]), #required: hold, canceled, awaiting_shipment
       "shipTo" => populate_address(shipment[:shipping_address]), #required (see populate_address for details)
       "billTo" => populate_address(shipment[:billing_address]) || populate_address(shipment[:shipping_address]),
-      "shippingAmount" => shipment[:shipping_amount].to_f.to_s,
       "customerNotes" => shipment[:delivery_instructions],
       "internalNotes" => shipment[:internal_notes],
       "gift" => shipment[:is_gift],
@@ -193,7 +192,23 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     }
 
     if shipment[:amount_paid]
-      order["amountPaid"] = shipment[:amount_paid]
+      order["amountPaid"] = shipment[:amount_paid].to_f.to_s
+    end
+    
+    if shipment[:shipping_amount]
+      order["shippingAmount"] = shipment[:shipping_amount].to_f.to_s
+    end
+    
+    if shipment[:tax_amount]
+      order["taxAmount"] = shipment[:tax_amount].to_f.to_s
+    end
+    
+    if shipment[:gift_message]
+      order["giftMessage"] = shipment[:gift_message]
+    end
+    
+    if shipment[:confirmation]
+      order["confirmation"] => map_confirmation(shipment[:confirmation])
     end
 
     if shipment[:requested_shipping_service]
@@ -268,6 +283,17 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       'canceled'
     else
       'awaiting_shipment'
+    end
+  end
+  
+  def map_confirmation(confirmation)
+    case confirmation
+    when 'Delivery'
+      'delivery'
+    when 'Signature'
+      'signature'
+    when 'Adult Signature'
+      'adult_signature'
     end
   end
 
