@@ -178,12 +178,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "internalNotes" => shipment[:internal_notes],
       "gift" => shipment[:is_gift],
       "giftMessage" => shipment[:gift_message],
+      "confirmation" => map_confirmation(shipment[:confirmation]),
       "packageCode" => 'package',
       "advancedOptions" => populate_advanced(shipment),
       "carrierCode" => carrier_code,
       "serviceCode" => map_service(carrier_code, shipment[:shipping_method]), #required if shipping_carrier is present
       "items" => populate_items(shipment[:items])
     }
+    
+    if shipment[:confirmation]
+    end
 
     if shipment[:amount_paid]
       order["amountPaid"] = shipment[:amount_paid].to_f.to_s
@@ -262,6 +266,17 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       'canceled'
     else
       'awaiting_shipment'
+    end
+  end
+  
+  def map_confirmation(confirmation)
+    case confirmation
+    when 'Delivery'
+      'delivery'
+    when 'Signature'
+      'signature'
+    when 'Adult Signature'
+      'adult_signature'
     end
   end
 
