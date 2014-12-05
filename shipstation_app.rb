@@ -177,17 +177,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "customerNotes" => shipment[:delivery_instructions],
       "internalNotes" => shipment[:internal_notes],
       "gift" => shipment[:is_gift],
-      "giftMessage" => shipment[:gift_message],
-      "confirmation" => map_confirmation(shipment[:confirmation]),
       "packageCode" => 'package',
       "advancedOptions" => populate_advanced(shipment),
       "carrierCode" => carrier_code,
       "serviceCode" => map_service(carrier_code, shipment[:shipping_method]), #required if shipping_carrier is present
       "items" => populate_items(shipment[:items])
     }
-    
-    if shipment[:confirmation]
-    end
 
     if shipment[:amount_paid]
       order["amountPaid"] = shipment[:amount_paid].to_f.to_s
@@ -199,6 +194,14 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     
     if shipment[:tax_amount]
       order["taxAmount"] = shipment[:tax_amount].to_f.to_s
+    end
+    
+    if shipment[:gift_message]
+      order["giftMessage"] = shipment[:gift_message]
+    end
+    
+    if shipment[:confirmation]
+      order["confirmation"] => map_confirmation(shipment[:confirmation])
     end
 
     # order["requestedShippingService"] = shipment[:requested_shipping_service] if shipment[:requested_shipping_service].present?
