@@ -208,7 +208,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     end
     
     if shipment[:confirmation]
-      order["confirmation"] => map_confirmation(shipment[:confirmation])
+      order["confirmation"] = map_confirmation(shipment[:confirmation])
     end
 
     if shipment[:requested_shipping_service]
