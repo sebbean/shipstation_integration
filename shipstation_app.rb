@@ -162,6 +162,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
     raise "There is no service named '#{service_name}' associated wtih the carrier_code of '#{carrier_code}'"
   end
+  
+  def map_package(carrier_code, package_name)
+    response = ShipstationClient.request :get, "Carriers/ListPackages?carrierCode=#{carrier_code}", headers: ship_headers
+
+    response.body.each do |package|
+      return package["code"] if package["name"] == package_name
+    end
+
+    raise "There is no package named '#{package_name}' associated with the carrier_code of '#{carrier_code}'"
+  end
 
   def populate_order(shipment)
     order = {
@@ -192,6 +202,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       carrier_code = map_carrier(shipment[:shipping_carrier]) #
       order["carrierCode"] = carrier_code
       order["serviceCode"] = map_service(carrier_code, shipment[:shipping_method])
+      order["packageCode"] = map_package(carrier_code, shipment[:package]) if shipment[:package]
     end
 
     order
