@@ -174,10 +174,10 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       "orderStatus" => map_status(shipment[:status]), #required: hold, canceled, awaiting_shipment
       "shipTo" => populate_address(shipment[:shipping_address]), #required (see populate_address for details)
       "billTo" => populate_address(shipment[:billing_address]) || populate_address(shipment[:shipping_address]),
-      "shippingAmount" => shipment[:shipping_amount].to_f.to_s,
       "customerNotes" => shipment[:delivery_instructions],
       "internalNotes" => shipment[:internal_notes],
       "gift" => shipment[:is_gift],
+      "giftMessage" => shipment[:gift_message],
       "packageCode" => 'package',
       "advancedOptions" => populate_advanced(shipment),
       "carrierCode" => carrier_code,
@@ -186,7 +186,15 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     }
 
     if shipment[:amount_paid]
-      order["amountPaid"] = shipment[:amount_paid]
+      order["amountPaid"] = shipment[:amount_paid].to_f.to_s
+    end
+    
+    if shipment[:shipping_amount]
+      order["shippingAmount"] = shipment[:shipping_amount].to_f.to_s
+    end
+    
+    if shipment[:tax_amount]
+      order["taxAmount"] = shipment[:tax_amount].to_f.to_s
     end
 
     # order["requestedShippingService"] = shipment[:requested_shipping_service] if shipment[:requested_shipping_service].present?
