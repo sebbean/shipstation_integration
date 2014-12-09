@@ -1,6 +1,8 @@
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/numeric/time'
 
+Unirest.timeout(30) # generous timeout
+
 class ShipstationClient
   class ResponseError < StandardError; end
 
@@ -162,7 +164,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
     raise "There is no service named '#{service_name}' associated with the carrier_code of '#{carrier_code}'"
   end
-  
+
   def map_package(carrier_code, package_name)
     response = ShipstationClient.request :get, "Carriers/ListPackages?carrierCode=#{carrier_code}", headers: ship_headers
 
@@ -194,19 +196,19 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     if shipment[:amount_paid]
       order["amountPaid"] = shipment[:amount_paid].to_f.to_s
     end
-    
+
     if shipment[:shipping_amount]
       order["shippingAmount"] = shipment[:shipping_amount].to_f.to_s
     end
-    
+
     if shipment[:tax_amount]
       order["taxAmount"] = shipment[:tax_amount].to_f.to_s
     end
-    
+
     if shipment[:gift_message]
       order["giftMessage"] = shipment[:gift_message]
     end
-    
+
     if shipment[:confirmation]
       order["confirmation"] = map_confirmation(shipment[:confirmation])
     end
@@ -285,7 +287,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       'awaiting_shipment'
     end
   end
-  
+
   def map_confirmation(confirmation)
     case confirmation
     when 'Delivery'
