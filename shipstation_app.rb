@@ -8,7 +8,7 @@ class ShipstationClient
 
   class << self
     def request(method, path, options)
-      response = Unirest.send method, "https://shipstation-p-mashape-com-uhgm6jctxaxb.runscope.net/#{path}", options
+      response = Unirest.send method, "https://shipstation.p.mashape.com/#{path}", options
       return response if response.code == 200
 
       raise ResponseError, "#{response.code}, API error: #{response.body.inspect}"
