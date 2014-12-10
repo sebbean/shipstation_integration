@@ -17,6 +17,11 @@ class ShipstationClient
 end
 
 class ShipStationApp < EndpointBase::Sinatra::Base
+  # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
+  # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
+  # for this the timestamp we use for "since" should be adjusted accordingly.
+  ZONE = "Pacific Time (US & Canada)"
+
   set :public_folder, 'public'
   set :logging, true
 
@@ -91,24 +96,13 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   post '/get_shipments' do
-    # ShipStation appears to be recording their timestamps in local (PST) time but storing that timestamp
-    # as UTC (so it's basically 7-8 hours off the correct time (depending on daylight savings). To compensate
-    # for this the timestamp we use for "since" should be adjusted accordingly.
-    zone = "Pacific Time (US & Canada)"
-    since_time = Time.parse(@config[:since]).in_time_zone(zone)
-    since_date = "#{since_time.year}-#{since_time.month}-#{since_time.day}"
-
-    query_string = "page=1&pageSize=500&shipdatestart=#{since_date}"
-    response = ShipstationClient.request :get, "Shipments/List?#{query_string}", headers: ship_headers
-
     @kount = 0
-
-    response.body["shipments"].each do |shipment|
+    get_all_shipments.each do |shipment|
       # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
       # shipments down further using the timestamp provided
       #
       # Need to parse value returned from SS as PT
-      next unless ActiveSupport::TimeZone[zone].parse(shipment["createDate"]) > since_time
+      next unless ActiveSupport::TimeZone[ZONE].parse(shipment["createDate"]) > since_time
 
       @kount += 1
       shipTo = shipment["shipTo"]
@@ -144,6 +138,31 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   private
+
+  def since_time
+    Time.parse(@config[:since]).in_time_zone(ZONE)
+  end
+
+  def since_date
+    "#{since_time.year}-#{since_time.month}-#{since_time.day}"
+  end
+
+  # Paginates through all the shipments
+  def get_all_shipments
+    current_page = 0
+    shipments = []
+    begin
+      current_page += 1
+
+      query_string = "page=#{current_page}&pageSize=500&shipdatestart=#{since_date}"
+      response = ShipstationClient.request :get, "Shipments/List?#{query_string}", headers: ship_headers
+
+      shipments << response.body["shipments"]
+
+    end while current_page < response.body["pages"].to_i
+
+    shipments.flatten
+  end
 
   def map_carrier(carrier_name)
     response = ShipstationClient.request :get, "Carriers", headers: ship_headers
