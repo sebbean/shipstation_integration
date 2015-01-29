@@ -292,7 +292,9 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       :state => address[:state], #required
       :postalCode => address[:zipcode], #required
       :country => address[:country], #required
-      :phone => address[:phone]
+      :phone => address[:phone],
+      :company => address[:company],
+      :residential => address[:is_residential].present? ? address[:is_residential] : nil
     }
   end
 

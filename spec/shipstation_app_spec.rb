@@ -66,7 +66,9 @@ describe ShipStationApp do
             city: "São Paulo",
             state: "SP",
             country: "BR",
-            phone: "5511955111091"
+            phone: "5511955111091",
+            company: "Spree Commerce",
+            is_residential: true
           },
           items: [{
               name: "Spree T-Shirt",
