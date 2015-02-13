@@ -1,7 +1,7 @@
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/numeric/time'
 
-Unirest.timeout(30) # generous timeout
+Unirest.timeout(240) # generous timeout
 
 class ShipstationClient
   class ResponseError < StandardError; end
