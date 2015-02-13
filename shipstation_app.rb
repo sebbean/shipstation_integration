@@ -106,12 +106,16 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
     shipments = response.body["shipments"]
 
+    added_count = 0
+
     shipments.each do |shipment|
       # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
       # shipments down further using the timestamp provided
       #
       # Need to parse value returned from SS as PT
       next unless ActiveSupport::TimeZone[ZONE].parse(shipment["createDate"]) > since_time
+
+      added_count += 1
 
       shipTo = shipment["shipTo"]
 
@@ -135,7 +139,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       }
     end
 
-    set_summary "Retrieved #{shipments.size} shipments from ShipStation" if shipments.any?
+    set_summary "Retrieved #{added_count} shipments from ShipStation" if added_count > 0
 
     if current_page < response.body['pages'].to_i
       add_parameter 'page', current_page + 1
