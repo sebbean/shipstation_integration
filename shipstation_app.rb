@@ -8,7 +8,9 @@ class ShipstationClient
 
   class << self
     def request(method, path, options)
-      response = Unirest.send method, "https://shipstation.p.mashape.com/#{path}", options
+      # response = Unirest.send method, "https://shipstation.p.mashape.com/#{path}", options
+      response = Unirest.send method, "https://ssapi.shipstation.com/#{path}", options
+
       return response if response.code == 200
 
       raise ResponseError, "#{response.code}, API error: #{response.body.inspect}"
@@ -320,8 +322,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
   def ship_headers
     {
-      "Authorization" => "Basic #{@config[:authorization]}",
-      "X-Mashape-Key" => @config[:mashape_key]
+      "Authorization" => "Basic #{@config[:authorization]}" #,
+      # "X-Mashape-Key" => @config[:mashape_key]
     }
   end
 end
