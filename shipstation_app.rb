@@ -98,15 +98,21 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   post '/get_shipments' do
-    @kount = 0
-    get_all_shipments.each do |shipment|
+    current_page = (@config['page'] || 1).to_i
+
+    query_string = "page=#{current_page}&pageSize=500&shipdatestart=#{since_date}"
+
+    response = ShipstationClient.request :get, "Shipments/List?#{query_string}", headers: ship_headers
+
+    shipments = response.body["shipments"]
+
+    shipments.each do |shipment|
       # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
       # shipments down further using the timestamp provided
       #
       # Need to parse value returned from SS as PT
       next unless ActiveSupport::TimeZone[ZONE].parse(shipment["createDate"]) > since_time
 
-      @kount += 1
       shipTo = shipment["shipTo"]
 
       add_object :shipment, {
@@ -129,14 +135,20 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       }
     end
 
-    if @kount > 0
-      # Tell Wombat to use the current time as the 'high watermark' the next time it checks
+    set_summary "Retrieved #{shipments.size} shipments from ShipStation" if shipments.any?
+
+    if current_page < response.body['pages'].to_i
+      add_parameter 'page', current_page + 1
+
+      result 206
+    else
+      add_parameter 'page', 1
+
       add_parameter 'since', Time.now.utc.iso8601
 
-      set_summary "Retrieved #{@kount} shipments from ShipStation"
+      result 200
     end
 
-    result 200
   end
 
   private
@@ -147,23 +159,6 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
   def since_date
     "#{since_time.year}-#{since_time.month}-#{since_time.day}"
-  end
-
-  # Paginates through all the shipments
-  def get_all_shipments
-    current_page = 0
-    shipments = []
-    begin
-      current_page += 1
-
-      query_string = "page=#{current_page}&pageSize=500&shipdatestart=#{since_date}"
-      response = ShipstationClient.request :get, "Shipments/List?#{query_string}", headers: ship_headers
-
-      shipments << response.body["shipments"]
-
-    end while current_page < response.body["pages"].to_i
-
-    shipments.flatten
   end
 
   def map_carrier(carrier_name)
