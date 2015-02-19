@@ -23,7 +23,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 Feb 2015 15:47:26 GMT
+      - Thu, 19 Feb 2015 15:53:12 GMT
       Expires:
       - "-1"
       Pragma:
@@ -37,9 +37,9 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '36'
+      - '37'
       X-Rate-Limit-Reset:
-      - '50'
+      - '2'
       Content-Length:
       - '76511'
       Connection:
@@ -132,5 +132,5 @@ http_interactions:
         Lee","company":null,"street1":"4600 EAST WEST HWY","street2":null,"street3":null,"city":"BETHESDA","state":"MD","postalCode":"20814-3415","country":"US","phone":"6168561225","residential":null,"addressVerified":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":null,"labelData":null,"formData":null},{"shipmentId":64644825,"orderId":95896636,"orderNumber":"H43681320077","createDate":"2015-02-18T13:02:43.8430000","shipDate":"2015-02-18","shipmentCost":8.53,"insuranceCost":0.0,"trackingNumber":"1ZR96E030391195473","isReturnLabel":false,"batchNumber":null,"carrierCode":"ups","serviceCode":"ups_ground","packageCode":"package","confirmation":null,"warehouseId":22298,"voided":false,"voidDate":null,"marketplaceNotified":true,"notifyErrorMessage":null,"shipTo":{"name":"Mike
         Lee","company":null,"street1":"4600 EAST WEST HWY","street2":null,"street3":null,"city":"BETHESDA","state":"MD","postalCode":"20814-3415","country":"US","phone":"7034898256","residential":null,"addressVerified":null},"weight":{"value":16.0,"units":"ounces"},"dimensions":null,"insuranceOptions":{"provider":null,"insureShipment":false,"insuredValue":0.0},"advancedOptions":null,"shipmentItems":null,"labelData":null,"formData":null}],"total":84,"page":1,"pages":0}'
     http_version: 
-  recorded_at: Thu, 19 Feb 2015 15:47:11 GMT
+  recorded_at: Thu, 19 Feb 2015 15:52:58 GMT
 recorded_with: VCR 2.9.3

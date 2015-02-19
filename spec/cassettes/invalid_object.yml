@@ -23,7 +23,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 Feb 2015 15:47:08 GMT
+      - Thu, 19 Feb 2015 15:53:11 GMT
       Expires:
       - "-1"
       Pragma:
@@ -37,9 +37,9 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '39'
+      - '40'
       X-Rate-Limit-Reset:
-      - '50'
+      - '3'
       Content-Length:
       - '98'
       Connection:
@@ -48,7 +48,7 @@ http_interactions:
       encoding: UTF-8
       string: '[{"name":"UPS","code":"ups","accountNumber":"R96E03","requiresFundedAccount":false,"balance":0.0}]'
     http_version: 
-  recorded_at: Thu, 19 Feb 2015 15:47:10 GMT
+  recorded_at: Thu, 19 Feb 2015 15:52:57 GMT
 - request:
     method: get
     uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@ssapi.shipstation.com/Carriers/ListServices?carrierCode=ups
@@ -72,7 +72,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 Feb 2015 15:47:09 GMT
+      - Thu, 19 Feb 2015 15:53:12 GMT
       Expires:
       - "-1"
       Pragma:
@@ -86,9 +86,9 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '38'
+      - '39'
       X-Rate-Limit-Reset:
-      - '50'
+      - '3'
       Content-Length:
       - '1669'
       Connection:
@@ -135,14 +135,14 @@ http_interactions:
         bmF0aW9uYWwiLCJkb21lc3RpYyI6ZmFsc2UsImludGVybmF0aW9uYWwiOnRy
         dWV9XQ==
     http_version: 
-  recorded_at: Thu, 19 Feb 2015 15:47:10 GMT
+  recorded_at: Thu, 19 Feb 2015 15:52:57 GMT
 - request:
     method: post
     uri: https://562d5d49ceef416b89d077d96c65420c:7ae1264669e845a98052092c7801a704@ssapi.shipstation.com/Orders/CreateOrder
     body:
       encoding: UTF-8
       string: '{"customerEmail":null,"customerUsername":null,"orderNumber":null,"orderDate":"2015-02-19
-        10:47:09 -0500","paymentDate":"2015-02-19 10:47:09 -0500","orderStatus":"awaiting_shipment","shipTo":null,"billTo":null,"customerNotes":null,"internalNotes":null,"gift":null,"packageCode":"package","advancedOptions":{"storeId":null,"customfield1":null,"customfield2":null,"customfield3":null},"items":[],"carrierCode":"ups","serviceCode":"ups_standard"}'
+        10:52:57 -0500","paymentDate":"2015-02-19 10:52:57 -0500","orderStatus":"awaiting_shipment","shipTo":null,"billTo":null,"customerNotes":null,"internalNotes":null,"gift":null,"packageCode":"package","advancedOptions":{"storeId":null,"customfield1":null,"customfield2":null,"customfield3":null},"items":[],"carrierCode":"ups","serviceCode":"ups_standard"}'
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -164,7 +164,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 19 Feb 2015 15:47:09 GMT
+      - Thu, 19 Feb 2015 15:53:12 GMT
       Expires:
       - "-1"
       Pragma:
@@ -178,9 +178,9 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '40'
       X-Rate-Limit-Remaining:
-      - '37'
+      - '38'
       X-Rate-Limit-Reset:
-      - '49'
+      - '3'
       Content-Length:
       - '218'
       Connection:
@@ -191,5 +191,5 @@ http_interactions:
         orderNumber field is required."],"apiOrder.billTo":["The billTo field is required."],"apiOrder.shipTo":["The
         shipTo field is required."]}}'
     http_version: 
-  recorded_at: Thu, 19 Feb 2015 15:47:10 GMT
+  recorded_at: Thu, 19 Feb 2015 15:52:57 GMT
 recorded_with: VCR 2.9.3

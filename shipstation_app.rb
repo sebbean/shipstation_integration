@@ -283,7 +283,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
   def populate_address(address)
     return if address.nil? || address.empty?
-    {
+    address_hash = {
       :name => address[:firstname] + " " + address[:lastname], #required
       :street1 => address[:address1], #required
       :street2 => address[:address2],
@@ -293,9 +293,13 @@ class ShipStationApp < EndpointBase::Sinatra::Base
       :postalCode => address[:zipcode], #required
       :country => address[:country], #required
       :phone => address[:phone],
-      :company => address[:company],
-      :residential => address[:is_residential].present? ? address[:is_residential] : nil
+      :company => address[:company]
     }
+    if address[:is_residential].present?
+      address_hash[:residential] = address[:is_residential]
+    end
+
+    address_hash
   end
 
   def map_status(status)
