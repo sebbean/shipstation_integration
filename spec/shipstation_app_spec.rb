@@ -7,9 +7,7 @@ describe ShipStationApp do
 
   let(:config) do
     {
-      "authorization" => ENV['SHIPSTATION_AUTHORIZATION'],
-      "mashape_key" => ENV['SHIPSTATION_MASHAPE_KEY'],
-      "shipstation_store_id" => ENV['SHIPSTATION_STORE_ID']
+      "authorization" => ENV['SHIPSTATION_AUTHORIZATION']
     }
   end
 
@@ -153,7 +151,7 @@ describe ShipStationApp do
 
   it "handles wrong credentials errors" do
     request = { parameters: config.merge(since: "2014-10-23T00:38:23Z") }
-    request[:parameters][:mashape_key] = "wrong"
+    request[:parameters][:authorization] = "wrong"
 
     VCR.use_cassette("wrong_key") do
       post '/get_shipments', request.to_json, {}
