@@ -306,8 +306,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
     case status
     when 'hold'
       'on_hold'
-    when '/cancell?ed/'
-      'canceled'
+    when 'canceled', 'cancelled'
+      'cancelled'
     else
       'awaiting_shipment'
     end
