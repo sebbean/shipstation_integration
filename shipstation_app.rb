@@ -234,8 +234,8 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
     if shipment[:requested_shipping_service]
       order["requestedShippingService"] = shipment[:requested_shipping_service]
-    else
-      carrier_code = map_carrier(shipment[:shipping_carrier]) #
+    elsif shipment[:shipping_carrier]
+      carrier_code = map_carrier(shipment[:shipping_carrier])
       order["carrierCode"] = carrier_code
       order["serviceCode"] = map_service(carrier_code, shipment[:shipping_method])
       order["packageCode"] = map_package(carrier_code, shipment[:package]) if shipment[:package]
