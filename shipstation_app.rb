@@ -325,8 +325,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def ship_headers
-    {
-      "Authorization" => "Basic #{@config[:authorization]}"
-    }
+    headers = { 'Authorization' => "Basic #{@config[:authorization]}" }
+
+    unless @config[:x_partner].to_s.empty?
+      headers['x-partner'] = @config[:x_partner]
+    end
+
+    headers
   end
 end
