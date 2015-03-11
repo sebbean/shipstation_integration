@@ -1,5 +1,6 @@
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/numeric/time'
+require 'base64'
 
 Unirest.timeout(240) # generous timeout
 
@@ -325,7 +326,13 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def ship_headers
-    headers = { 'Authorization' => "Basic #{@config[:authorization]}" }
+    unless authorization = @config[:authorization]
+      # the parameter authorization is for old customers - legacy support (Mashape)
+      # new customers should use key & secret
+      authorization = Base64.strict_encode64("#{@config[:key]}:#{@config[:secret]}")
+    end
+
+    headers = { 'Authorization' => "Basic #{authorization}" }
 
     unless @config[:x_partner].to_s.empty?
       headers['x-partner'] = @config[:x_partner]
