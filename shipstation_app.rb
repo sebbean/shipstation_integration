@@ -326,10 +326,12 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   end
 
   def ship_headers
-    unless authorization = @config[:authorization]
-      # the parameter authorization is for old customers - legacy support (Mashape)
-      # new customers should use key & secret
+    # the parameter authorization is for old customers - legacy support (Mashape)
+    # new customers should use key & secret
+    if !@config[:key].to_s.empty? && !@config[:secret].to_s.empty?
       authorization = Base64.strict_encode64("#{@config[:key]}:#{@config[:secret]}")
+    else
+      authorization = @config[:authorization]
     end
 
     headers = { 'Authorization' => "Basic #{authorization}" }
