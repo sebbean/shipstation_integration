@@ -285,7 +285,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
   def populate_address(address)
     return if address.nil? || address.empty?
     address_hash = {
-      :name => address[:firstname] + " " + address[:lastname], #required
+      :name => "#{address[:firstname]} #{address[:lastname]}", #required
       :street1 => address[:address1], #required
       :street2 => address[:address2],
       :street3 => address[:address3],
