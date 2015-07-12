@@ -161,7 +161,7 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
    query_string = "page=#{current_page}&pageSize=500&createDateStart=#{since_date}"
 
-   response = ShipstationClient.request :get, "orders?#{query_string}", headers: ship_headers
+   response = ShipstationClient.request :get, "Orders/List?#{query_string}", headers: ship_headers
 
    orders = response.body["orders"]
 
