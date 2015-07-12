@@ -155,6 +155,46 @@ class ShipStationApp < EndpointBase::Sinatra::Base
 
   end
 
+  post '/get_orders' do
+    
+   current_page = (@config['page'] || 1).to_i
+
+   query_string = "page=#{current_page}&pageSize=500&createDateStart=#{since_date}"
+
+   response = ShipstationClient.request :get, "orders?#{query_string}", headers: ship_headers
+
+   orders = response.body["orders"]
+
+   added_count = 0
+
+   orders.each do |order|
+      # ShipStation cannot give us shipments based on time (only date) so we need to filter the list of
+      # shipments down further using the timestamp provided
+      #
+      # Need to parse value returned from SS as PT
+      next unless ActiveSupport::TimeZone[ZONE].parse(orders["createDate"]) > since_time
+
+      added_count += 1
+
+      add_object :order, order
+    end
+
+    set_summary "Retrieved #{added_count} orders from ShipStation" if added_count > 0
+
+    if current_page < response.body['pages'].to_i
+      add_parameter 'page', current_page + 1
+
+      result 206
+    else
+      add_parameter 'page', 1
+
+      add_parameter 'since', Time.now.utc.iso8601
+
+      result 200
+    end
+
+  end
+
   private
 
   def since_time
